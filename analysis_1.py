@@ -12,6 +12,7 @@ import matplotlib
 matplotlib.rcParams['mathtext.fontset'] = 'stix'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
 
+
 def read_words_to_tuple(txt):
 
     df = pd.read_csv(txt,delim_whitespace=True,header=None,names=["errortype","word1","word2","count"])
@@ -19,6 +20,7 @@ def read_words_to_tuple(txt):
     df_sub = df.loc[df['errortype'] == "substitution"]
 
     return df_sub["word1"].values,df_sub["word2"].values,df_sub["count"].values
+
 
 def arpabet_cleaner(arpabet):
 
@@ -33,13 +35,16 @@ def articulatory_plotter(df_list: list, label_list: list, filename: str):
 
     x = np.arange(len(df_list[0]))
 
-    width = 0.15
+    fig_fontsize = 6 # 7
+    width = 0.13
     steps= len(df_list)
     # TODO: This logic works for this case only :( Probably if you do odd = width*2 it works for extended cases
     width_logic = np.linspace(start=-width*2,stop=width,num=steps)
 
 
-    fig =plt.figure(num=None, figsize=(3.14, 3.14), dpi=100, facecolor='w', edgecolor='k')
+    xdim = 3.14
+    ydim = 3.14 * 0.62
+    fig =plt.figure(num=None, figsize=(xdim, ydim), dpi=100, facecolor='w', edgecolor='k')
     #plt.figure(num=None, dpi=80, facecolor='w', edgecolor='k')
     for i in range(len(df_list)):
         plt.bar(x + width/2 + width_logic[i],df_list[i]["norm"],width,label=label_list[i])
@@ -54,15 +59,15 @@ def articulatory_plotter(df_list: list, label_list: list, filename: str):
     ax.axhline(y=0, color="black",linewidth=0.8)
     ax.set_xticks(x)
 
-    ax.set_xticklabels(df_list[0].index.values + " (" + df_list[0]["intentions"].astype(str) + ")", rotation=45, fontsize=7)
-    ax.tick_params(axis='both', which='major', labelsize=7, pad=1)
+    ax.set_xticklabels(df_list[0].index.values + " (" + df_list[0]["intentions"].astype(str) + ")", rotation=45, fontsize=fig_fontsize)
+    ax.tick_params(axis='both', which='major', labelsize=fig_fontsize, pad=1)
 
-    plt.ylabel("Relative articulatory error",fontsize=7,labelpad=-4)
-    lg = plt.legend(fontsize=7)
+    plt.ylabel("Relative articulatory error",fontsize=fig_fontsize,labelpad=-4)
+    lg = plt.legend(fontsize=fig_fontsize)
     plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
     plt.tight_layout(pad=0)
     fig.tight_layout(pad=0)
-    fig.set_size_inches(3.14, 3.14)
+    fig.set_size_inches(xdim, ydim)
     plt.savefig("figures/" + filename + ".pdf",bbox_inches='tight',pad_inches = 0.005)
 
 
@@ -73,61 +78,20 @@ def articulatory_features(df: pd.DataFrame):
     df['ARPAbet'] = df['ARPAbet'].str.lower()
     df["ARPAbet"] = df["ARPAbet"].apply(lambda s: ''.join([i for i in s if not i.isdigit()]))
 
-    converter_table = pd.read_csv("PhoneSets.csv")
+    converter_table = pd.read_csv("PhoneSet_modified.csv")
 
-
-    # Subsetting converter table
-    converter_table = converter_table.filter(regex="ARPAbet|^Vowel$|^Plosive$|^Nasal$|^Fricative$|^Affricates$|^Approximant$|^Bilabial$|^Labiodental_*|Dental_*|Alveolar_*|^Postalveolar_*|^Palatalized$|^Velar$|^Glottal$")
-
-    #def row_manipulation(row,string):
-    #    print(row[0])
-
-
-
-
-    # Letre akarok hozni egy uj oszlopot tobb oszlop kombinaciojabol
-
-    # A tobb oszlopot egy contains alapjan valasztom ki ez az investigate_cols
-
-    # Ha ezek kozul barmelyik egy akkor az uj oszlop is egy
-
-    # Alternatively: Sumolhatod a selected oszlopokat is ha nagyobb mint 0 -> 1
-
-    merge_list = ["Labiodental","Dental","Alveolar","Postalveolar"]
-    for item in merge_list:
-        investigate_cols = [col for col in converter_table.columns if item in col]
-        converter_table[item] = converter_table[investigate_cols].sum(axis=1)
-        converter_table.loc[converter_table[item] > 0, item] = 1
-
-        converter_table.drop(investigate_cols,axis=1,inplace=True)
-        #print(item)
-        #converter_table.loc[condition,item] = 1
-
-    #print(converter_table)
     converter_table = converter_table[converter_table['ARPAbet'].notna()]
     converter_table = converter_table.fillna(0)
 
-    #converter_table.to_csv("PhoneSet_reduced.csv")
-
-    # converter_table[item] = (converter_table[investigate_cols[0]].astype(bool)
-    #                              | converter_table['Plosive'].astype(bool)).astype(float)
-    #
-    # converter_table[item] = (converter_table['Nasal'].astype(bool) | converter_table['Plosive'].astype(bool)).astype(
-    #     float)
-    #
-    # converter_table["Labiodental"] = (converter_table.Nasal.astype(bool) | converter_table.Plosive.astype(bool)).astype(float)
-    #
-    # print(converter_table)
 
 
 
-    # There are no dentail/alveoler trills?
 
 
 
     # Plosive?
     moa_list = ["ARPAbet","Vowel","Plosive","Nasal","Fricative","Affricates","Approximant"]
-    poa_list = ["ARPAbet","Bilabial","Labiodental","Dental","Alveolar","Postalveolar","Velar","Glottal"]
+    poa_list = ["ARPAbet","Bilabial","Labiodental","Dental","Alveolar","Postalveolar","Palatal","Velar","Glottal"]
     manner_of_articulation = converter_table[moa_list]
     place_of_articulation = converter_table[poa_list]
 
@@ -153,72 +117,40 @@ def articulatory_features(df: pd.DataFrame):
 
 
 
-    #place_of_articulation = converter_table[["ARPAbet", "Vowel","Plosive","Fricative","Nasal"]]
-    #manner_of_articulation = converter_table[["ARPABet", "Bilabial", "Velar", "Affricates"]]
-
-    # Vigyazz arra hogy nagyon egyszeruen be tudsy mergelni Plosive, Plosive_A, Plosive_B
-    #place_of_articulation = converter_table.filter(regex="ARPAbet|^Vowel$|^Fricative$|^Nasal$")
-    #manner_of_articulation = converter_table.filter(regex="ARPAbet|Bilabial")
-
-    #manner_of_articulation = converter_table
-
-
-    # df = df.groupby(['phone'], as_index=False)['intentions','realisations'].sum()
-    #
-    # print(df)
-    # print(result)
-    # result.to_csv("arpabet_phones.csv")
-
-    # def row_manipulation(row):
-    #     new_row = feature_table.loc[feature_table['phone'] == row["phoneme"]]
-    #     new_row["phone"] = row["phoneme"]
-    #     return row if new_row.empty else new_row
-    #
-    # # We create a new column which is empty if not same item is found in first column
-    # for column in feature_table.columns.values:
-    #     new_df[column] = ""
-    #
-    # new_df = new_df.apply(lambda row: row_manipulation(row))
-    #
-    # print(new_df)
-    #new_df.to_csv("arpabet_phones.csv")
-
 
 
 def corpus_plotter(df_list: list, legend_list: list):
-    #print(df1)
-    #print(df2)
 
-    reference_df = df_list[0]
+    # There is a combination of pointer complexity and alignment here so let me explain
 
-    print("ref", reference_df)
-    for i in range(len(df_list)):
+
+    # The first line is a pass by value. We only need the referenc_df for the filtering (i.e) we know what ot filter
+    # in other arrays
+    reference_df = df_list[3]
+    df_list[3] = df_list[3][(df_list[3]["intentions"] >= 500) & (df_list[3]["phoneme"] != "HH")].sort_values(by=["norm"],
+                                                                                                 ascending=False)
+
+    for i in [0,1,2]:
         df = df_list[i]
-        if i == 0:
-            df = df[(reference_df["intentions"] >= 500) & (reference_df["phoneme"] != "HH")].sort_values(by=["norm"],ascending=False)
-        else:
-            df = df[reference_df["intentions"] >= 500]
 
-        print(len(df))
-        #print("after check sort", df)
-        #print("after setting", df)
+        df = df[reference_df["intentions"] >= 500]
 
-        if i != 0:
-            df = df.set_index("phoneme")
-            df = df.reindex(index=df_list[0]['phoneme'])
-            df = df.reset_index()
-
-        #print("after reset index", df)
+        df = df.set_index("phoneme")
+        df = df.reindex(index=df_list[3]['phoneme'])
+        #df = df.reindex(index=df_list[3]['phoneme'])
+        df = df.reset_index()
         df_list[i] = df
-        #print(df_list[i])
 
-    x = np.arange(len(df_list[0]))
+    print("hosszok")
+    [print(len(item)) for item in df_list]
+    x = np.arange(len(df_list[3]))
     width = 0.20
     steps = len(df_list)
     width_logic = np.linspace(start=-width*2,stop=width,num=steps)
 
-
-    fig = plt.figure(num=None, figsize=(6.29,3.14), dpi=100, facecolor='w', edgecolor='k')
+    width_fig = 6.6 # 6.29
+    height_fig = 3.14 * 0.60
+    fig = plt.figure(num=None, figsize=(width_fig,height_fig), dpi=100, facecolor='w', edgecolor='k')
     for i in range(len(df_list)):
         df = df_list[i]
         print(legend_list[i])
@@ -233,19 +165,19 @@ def corpus_plotter(df_list: list, legend_list: list):
     ax.axhline(y=0, color="black", linewidth=0.8)
     ax.set_xticks(x)
 
-    ax.set_xticklabels(df_list[0]["phoneme"].values, rotation=45,
+    ax.set_xticklabels(["/" + x.lower() + "/" for x in df_list[3]["phoneme"].values], rotation=45,
                        fontsize=7)
 
 
     ax.tick_params(axis='both', which='major', labelsize=7)
 
-    plt.xlim([-0.6,len(df_list[0])-0.4])
+    plt.xlim([-0.6,len(df_list[3])-0.4])
 
     plt.ylabel("Relative phoneme error", fontsize=7,labelpad=-4)
     lg = plt.legend(fontsize=7)
     plt.tight_layout()
     fig.tight_layout()
-    fig.set_size_inches(6.29    , 3.14)
+    fig.set_size_inches(width_fig, height_fig)
     plt.savefig("figures/phoneme_error.pdf",bbox_inches='tight',pad_inches = 0.005)
     #plt.show()
 
@@ -334,7 +266,40 @@ def figure_producer():
     #print(Counter(arpabet_realisation_list).values())
     ratio_excluded = exclusion_count / np.sum(count)
     print(ratio_excluded)
+
+
+def top_word_error(paths,top=5):
+
+    for i,path in enumerate(paths):
+        df = pd.read_csv(path,delim_whitespace=True,names=["errortype","word1","word2","count_" + str(i)])
+        #names=["type","word","word","num"])
+        df = df[df["errortype"] == "substitution"][:top]
+        print(df)
+
+def summary_of_error_types(paths):
+
+    for path in paths:
+        df = pd.read_csv(path,delim_whitespace=True,header=None)
+
+        print(path)
+        print("correct: ", len(df[df[0] == "correct"]))
+        print("substitution: ", len(df[df[0] == "substitution"]))
+        print("insertion: ", len(df[df[0] == "deletion"]))
+        print("deletion: ", len(df[df[0] == "insertion"]))
+
+
+
+
 if __name__ == '__main__':
+
+    # Top word error analysis
+    path=["/home/boomkin/Downloads/last_ASR/TUD_male_fem/scoring_kaldi_44.32_train/wer_details/ops",
+          "/home/boomkin/Downloads/last_ASR/TUD_male_fem/scoring_kaldi_49.04_fmllr_train/wer_details/ops",
+          "/home/boomkin/Downloads/second_last_asr/scoring_kaldi_53.62_fbank_pitch_train/wer_details/ops",
+          "/home/boomkin/Downloads/second_last_asr/scoring_kaldi_78.57_baseline_not_trained_on_oralcancer_train/wer_details/ops"]
+
+    top_word_error(path)
+
 
     location_1="/home/boomkin/Downloads/last_ASR/TUD_male_fem/scoring_kaldi_44.32_train/wer_details/per_utt"
     df_1 = full_corpus(location_1)
@@ -348,27 +313,40 @@ if __name__ == '__main__':
     location_4 = "/home/boomkin/Downloads/second_last_asr/scoring_kaldi_78.57_baseline_not_trained_on_oralcancer_train/wer_details/per_utt"
     df_4 = full_corpus(location_4)
     poa_4, moa_4 = articulatory_features(df_4)
-    corpus_plotter([df_2,df_3,df_1,df_4],["fMLLR", "baseline 2", "baseline 1", "w/o retraining"])
+    #corpus_plotter([df_2,df_3,df_1,df_4],["fMLLR", "baseline 2", "baseline 1", "w/o retraining"])
+    corpus_plotter([df_4,df_1,df_3,df_2],["Baseline", "DNN AM retraining", "Baseline + OC", "fMLLR for AM retraining"])
 
-    articulatory_plotter([poa_1, poa_2,poa_3,poa_4],["AM retrained","fmllr retrained","pitch baseline retrained(?)","baseline"],"poa_train")
-    articulatory_plotter([moa_1, moa_2,moa_3,moa_4],["AM retrained","fmllr retrained","pitch baseline","baseline"],"moa_train")
+    #articulatory_plotter([poa_1, poa_2,poa_3,poa_4],["AM retrained","fmllr retrained","pitch baseline retrained(?)","baseline"],"poa_train")
+    #articulatory_plotter([moa_1, moa_2,moa_3,moa_4],["AM retrained","fmllr retrained","pitch baseline","baseline"],"moa_train")
 
 
     location_1="/home/boomkin/Downloads/second_last_asr/scoring_kaldi_54.13_baseline_not_trained_on_oralcancer_test/wer_details/per_utt"
     df_1 = full_corpus(location_1)
+    df_1.to_csv("error_analysis_baseline.csv")
     poa_1, moa_1 = articulatory_features(df_1)
     location_2 = "/home/boomkin/Downloads/second_last_asr/scoring_kaldi_49.95_fbank_pitch_test/wer_details/per_utt"
     df_2 = full_corpus(location_2)
+    df_2.to_csv("error_analysis_baseline_oc.csv")
     poa_2, moa_2 = articulatory_features(df_2)
     location_3 = "/home/boomkin/Downloads/last_ASR/TUD_male_fem/scoring_kaldi_48.55_test/wer_details/per_utt"
     df_2 = full_corpus(location_3)
+    df_2.to_csv("error_analysis_dnn_am_retraining.csv")
     poa_3, moa_3 = articulatory_features(df_2)
     location_4 = "/home/boomkin/Downloads/last_ASR/TUD_male_fem/scoring_kaldi_44.15_fmllr_test/wer_details/per_utt"
     df_2 = full_corpus(location_4)
-    poa_4, moa_4 = articulatory_features(df_2)
+    df_2.to_csv("error_analysis_fmllr.csv")
 
-    articulatory_plotter([poa_1, poa_2, poa_3, poa_4],["w/o training", "baseline 2", "baseline 1", "fMLLR"],"poa")
-    articulatory_plotter([moa_1, moa_2, moa_3, moa_4], ["w/o training", "baseline 2", "baseline 1", "fMLLR"],"moa")
+    poa_4, moa_4 = articulatory_features(df_2)
+    #
+    articulatory_plotter([poa_1, poa_3, poa_2, poa_4],["Baseline", "DNN AM retraining", "Baseline + OC", "fMLLR for AM retraining"],"poa_0429")
+    articulatory_plotter([moa_1, moa_3, moa_2, moa_4],["Baseline", "DNN AM retraining", "Baseline + OC", "fMLLR for AM retraining"],"moa_0429")
+    #
+    paths = [str.replace(location_1,"per_utt","ops"),
+             str.replace(location_2,"per_utt","ops"),
+             str.replace(location_3,"per_utt","ops"),
+             str.replace(location_4,"per_utt","ops")]
+
+    summary_of_error_types(paths)
     #articulatory_plotter([v_1, v_2, v_3, v_4], ["not retrained", "pitch retrained", "AM retrained", "fMLLR"])
     #corpus_plotter(df_1,df_2)
     #figure_producer()
