@@ -221,7 +221,7 @@ def full_corpus(location: str) -> pd.DataFrame:
     #df.to_csv("error_analysis_train_fmllr.csv")
 
 def figure_producer():
-    filename = "error_analysis_train.csv"
+    filename = "backup/error_analysis_train.csv"
     word1,word2,count = read_words_to_tuple("/home/boomkin/Downloads/last_ASR/TUD_male_fem/scoring_kaldi_44.32_train/wer_details/ops")
     cmudict = text.cmudict.CMUDict("/home/boomkin/repos/mellotron/data/cmu_dictionary")
 
