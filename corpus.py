@@ -9,7 +9,7 @@ class Corpus():
 
     def __init__(self, location):
         self.location = location
-        self.cmudict = text.cmudict.CMUDict("/home/boomkin/repos/mellotron/data/cmu_dictionary")
+        self.cmudict = text.cmudict.CMUDict("./text/cmu_dictionary")
 
     @staticmethod
     def arpabet_cleaner(arpabet):
@@ -20,9 +20,11 @@ class Corpus():
         return arpabet_split
 
     def get_words_for_sentence(self, words) -> list:
+
+        # Flattents the word list
         ref_words = list(itertools.chain(*words))
 
-        # Cleans the word files from "misalignment" stars
+        # Cleans the word files from starts which are added to mark insertion or deletion errors
         ref_words_cleaned = [word for word in ref_words if word != "***"]
 
         # Makes it to clean ARPABET
@@ -62,13 +64,41 @@ class Corpus():
 
         return df
 
-    def get_dataframe(self) -> pd.DataFrame:
+    @staticmethod
+    def get_recording_id_of_utterance(utterance) -> str:
+        speaker_id = utterance[2:4]
+        return speaker_id
+
+    def extract_new_speakers(self, speaker_id_list: list, all_lines: list):
+
+        if speaker_id_list is not None:
+            new_speakers = [self.get_recording_id_of_utterance(line) for line in all_lines if ("ref" in line) &
+                            (self.get_recording_id_of_utterance(line) not in speaker_id_list)]
+        else:
+            new_speakers = [self.get_recording_id_of_utterance(line) for line in all_lines if ("ref" in line)]
+
+        new_speakers = set(new_speakers)
+        return new_speakers
+
+    def get_dataframe(self, recordings_to_exclude=None, no_stress=False) -> pd.DataFrame:
+        """
+        Extract the phoneme dataframes based on the Kaldi experiments wer_detail and per_utt
+        :param recordings_to_exclude: ID of recordings to NOT include
+        :param no_stress: if True, ignores linguistic stress
+        :return:
+        """
 
         with open(self.location, 'r') as f:
             all_lines = f.readlines()
 
-        ref_words_sentencewise = [line.split()[2:] for line in all_lines if ("ref" in line)]
-        hyp_words_sentencewise = [line.split()[2:] for line in all_lines if ("hyp" in line)]
+        if recordings_to_exclude is None:
+            ref_words_sentencewise = [line.split()[2:] for line in all_lines if ("ref" in line)]
+            hyp_words_sentencewise = [line.split()[2:] for line in all_lines if ("hyp" in line)]
+        else:
+            ref_words_sentencewise = [line.split()[2:] for line in all_lines if ("ref" in line) &
+                                      (self.get_recording_id_of_utterance(line) not in recordings_to_exclude)]
+            hyp_words_sentencewise = [line.split()[2:] for line in all_lines if ("hyp" in line) &
+                                      (self.get_recording_id_of_utterance(line) not in recordings_to_exclude)]
 
         reference_words = self.get_words_for_sentence(ref_words_sentencewise)
         hypothesis_words = self.get_words_for_sentence(hyp_words_sentencewise)
@@ -78,19 +108,38 @@ class Corpus():
 
         df = self.create_dataframe(phoneme,intentions,realisations)
 
-        return df
+        if no_stress:
+            df = self.clean_tobi_stress(df)
+            df = df.rename(columns={'ARPAbet': 'phoneme'})
+
+        new_speakers = self.extract_new_speakers(recordings_to_exclude, all_lines)
+
+        return df, new_speakers
 
     @staticmethod
     def clean_tobi_stress(df):
         # First we drop the linguistic stress features
         df = df.rename(columns={'phoneme': 'ARPAbet'})
+
         df['ARPAbet'] = df['ARPAbet'].str.lower()
 
+        # Reconcatenating non-digit characters
         df["ARPAbet"] = df["ARPAbet"].apply(lambda s: ''.join([i for i in s if not i.isdigit()]))
+
+        # Finally, duplicate rows have to be summed
+        df = df.groupby("ARPAbet").sum().reset_index()
         return df
 
     @staticmethod
     def convert_phoneme_to_articulatory(df: pd.DataFrame, conversion_table: pd.DataFrame, feature_list: list):
+        """
+        Converts a phoneme count dataframe to an articulatory feature count dataframe
+        :param df: phoneme count dataframe in ARPAbet format
+        :param conversion_table: the conversion table including the mappings to the articulory features
+        :param feature_list: the list of articulatory features (Plosives, etc.) to be included
+
+        :return: the articulatory dataframe
+        """
         # Select relevant columns for the conversion and merge them in a bigger table
         columns_to_select = ["ARPAbet"] + feature_list
         conversion_table = conversion_table[columns_to_select]
@@ -98,6 +147,7 @@ class Corpus():
 
         articulatory_df = pd.DataFrame(columns=["intentions", "realisations"], index=feature_list)
         num_features = len(feature_list)
+
         for i in range(num_features):
             feature = feature_list[i]
             matching_phonemes = conversion_table[conversion_table[feature] == 1]
@@ -111,9 +161,10 @@ class Corpus():
 
         return articulatory_df
 
-    def get_articulatory_dataframe(self):
+    def get_articulatory_dataframe(self, recordings_to_exclude : list):
 
-        df = self.clean_tobi_stress(self.get_dataframe())
+        df, new_speakers = self.get_dataframe(recordings_to_exclude=recordings_to_exclude)
+        df = self.clean_tobi_stress(df)
 
         converter_table = pd.read_csv("PhoneSet_modified.csv")
 
@@ -126,4 +177,4 @@ class Corpus():
         poa_df = self.convert_phoneme_to_articulatory(df, converter_table, poa_list)
         moa_df = self.convert_phoneme_to_articulatory(df, converter_table, moa_list)
 
-        return poa_df, moa_df
+        return poa_df, moa_df, new_speakers
