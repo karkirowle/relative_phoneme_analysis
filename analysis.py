@@ -41,6 +41,7 @@ no_stress = True
 partition = "test"
 single_partition = False
 recordings_to_exclude = None
+top_n_phoneme = 13
 #recordings_to_exclude = ["30","33","34"]
 #speakers_to_exclude = None
 
@@ -59,7 +60,7 @@ for experiment in (os.listdir("experiments")):
         folds = [1]
     else:
         folds = range(1,6)
-        
+
     for fold in folds:
         test_folder = [folder for folder in os.listdir(os.path.join("./experiments/",experiment,str(fold))) if partition in folder]
         wer_details = os.path.join("./experiments/",experiment,str(fold),test_folder[0],"wer_details","per_utt")
@@ -85,7 +86,8 @@ for experiment in (os.listdir("experiments")):
 phoneme_barplot(phoneme,phoneme[4],
                 ["Baseline","Baseline+OC","DNN AM retraining","FHVAE","fMLLR for AM retraining"],
                 300,
-                single_fold=single_partition)
+                single_fold=single_partition,
+                top_n_phonemes=top_n_phoneme)
 
 articulatory_barplot(moas,["Baseline","Baseline+OC","DNN AM retraining","FHVAE","fMLLR"],"2010_11_10_moa", single_fold=single_partition)
 articulatory_barplot(poas,["Baseline","Baseline+OC","DNN AM retraining","FHVAE","fMLLR"],"2010_11_10_poa", single_fold=single_partition)

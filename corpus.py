@@ -3,23 +3,24 @@ import text
 import pandas as pd
 import numpy as np
 from collections import Counter
+from typing import Optional
 
 
 class Corpus():
 
-    def __init__(self, location):
+    def __init__(self, location: str):
         self.location = location
         self.cmudict = text.cmudict.CMUDict("./text/cmu_dictionary")
 
     @staticmethod
-    def arpabet_cleaner(arpabet):
+    def arpabet_cleaner(arpabet: str):
         arpabet_wo_braces = arpabet.replace("{", "")
         arpabet_wo_braces = arpabet_wo_braces.replace("}", "")
         arpabet_split = arpabet_wo_braces.split()
 
         return arpabet_split
 
-    def get_words_for_sentence(self, words) -> list:
+    def get_words_for_sentence(self, words: list) -> list:
 
         # Flattents the word list
         ref_words = list(itertools.chain(*words))
@@ -65,11 +66,11 @@ class Corpus():
         return df
 
     @staticmethod
-    def get_recording_id_of_utterance(utterance) -> str:
+    def get_recording_id_of_utterance(utterance: str) -> str:
         speaker_id = utterance[2:4]
         return speaker_id
 
-    def extract_new_speakers(self, speaker_id_list: list, all_lines: list):
+    def extract_new_speakers(self, speaker_id_list: Optional[list], all_lines: list):
 
         if speaker_id_list is not None:
             new_speakers = [self.get_recording_id_of_utterance(line) for line in all_lines if ("ref" in line) &
@@ -80,7 +81,7 @@ class Corpus():
         new_speakers = set(new_speakers)
         return new_speakers
 
-    def get_dataframe(self, recordings_to_exclude=None, no_stress=False) -> pd.DataFrame:
+    def get_dataframe(self, recordings_to_exclude: Optional[list] = None, no_stress: bool = False) -> pd.DataFrame:
         """
         Extract the phoneme dataframes based on the Kaldi experiments wer_detail and per_utt
         :param recordings_to_exclude: ID of recordings to NOT include
@@ -117,7 +118,7 @@ class Corpus():
         return df, new_speakers
 
     @staticmethod
-    def clean_tobi_stress(df):
+    def clean_tobi_stress(df: pd.DataFrame):
         # First we drop the linguistic stress features
         df = df.rename(columns={'phoneme': 'ARPAbet'})
 
@@ -161,7 +162,7 @@ class Corpus():
 
         return articulatory_df
 
-    def get_articulatory_dataframe(self, recordings_to_exclude : list):
+    def get_articulatory_dataframe(self, recordings_to_exclude: Optional[list] = None):
 
         df, new_speakers = self.get_dataframe(recordings_to_exclude=recordings_to_exclude)
         df = self.clean_tobi_stress(df)

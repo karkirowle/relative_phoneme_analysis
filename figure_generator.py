@@ -8,7 +8,8 @@ matplotlib.rcParams['mathtext.fontset'] = 'stix'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
 
 
-def phoneme_barplot(df_list: list, reference_df: pd.DataFrame, legend_list: list, number_of_occurence: int, single_fold: bool):
+def phoneme_barplot(df_list: list, reference_df: pd.DataFrame, legend_list: list, number_of_occurence: int, single_fold: bool,
+                    top_n_phonemes: int):
 
     """
     Creates a bar plot with the phonemes occuring in the dataset and their intentions vs realisations
@@ -16,7 +17,8 @@ def phoneme_barplot(df_list: list, reference_df: pd.DataFrame, legend_list: list
     :param df_list:
     :param reference_df:
     :param legend_list: the legend list should contain the identifier of the experiment, should be the same size as df_list
-    :param number_of_occurence:
+    :param number_of_occurence: filters the phoneme list by the number of (mean) occurence of a phoneme
+    :param top_n_phonemes: an additional parameter applied on top of number of (mean) occurences to show top n phonemes
     :return:
     """
 
@@ -25,7 +27,9 @@ def phoneme_barplot(df_list: list, reference_df: pd.DataFrame, legend_list: list
         "height_fig": 3.14 * 0.60,
         "dpi": 100,
         "width": 0.40, # the width of the bars
-        "fontsize": 10
+        "fontsize": 10,
+        "legend_fontsize": 7,
+        "capsize": 1.5
     }
 
     assert len(df_list) == len(legend_list)
@@ -38,6 +42,8 @@ def phoneme_barplot(df_list: list, reference_df: pd.DataFrame, legend_list: list
     else:
         reference_df_common = reference_df[reference_df["mean"] >= number_of_occurence]
         reference_df_phoneme = reference_df_common.sort_values(by=["norm_mean"],ascending=False)["phoneme"]
+
+    reference_df_phoneme = reference_df_phoneme[:top_n_phonemes]
 
     # The different dataframes can have different phoneme sets, so we use the reference phonemes to filter them
     filtered_df_list = list()
@@ -52,8 +58,6 @@ def phoneme_barplot(df_list: list, reference_df: pd.DataFrame, legend_list: list
 
     num_phonemes = len(reference_df_phoneme)
     num_architectures = len(filtered_df_list)
-
-
 
     fig = plt.figure(num=None, figsize=(format_dict["width_fig"],format_dict["height_fig"]),
                      dpi=format_dict["dpi"], facecolor='w', edgecolor='k')
@@ -72,11 +76,7 @@ def phoneme_barplot(df_list: list, reference_df: pd.DataFrame, legend_list: list
 
 
         width_logic = np.arange(start= -format_dict["width"] * left_max, stop=format_dict["width"] * right_max,
-                                step=format_dict["width"]) + \
-                      width_cp
-
-        print(len(width_logic))
-        #width_logic = np.linspace(start=-(width_cp) * left_max, stop=(width_cp) * right_max, num=num_architectures) \
+                                step=format_dict["width"]) + width_cp
 
         legend_props = {"elinewidth": 0.5}
 
@@ -85,14 +85,14 @@ def phoneme_barplot(df_list: list, reference_df: pd.DataFrame, legend_list: list
                     df["norm"],
                     format_dict["width"],
                     label=legend_list[i],
-                    capsize=2,
+                    capsize=format_dict["capsize"],
                     error_kw=legend_props)
         else:
             plt.bar(x + width_logic[i],
                     df["norm_mean"],
                     format_dict["width"],
                     label=legend_list[i],
-                    capsize=2,
+                    capsize=format_dict["capsize"],
                     yerr=df["norm_std"],
                     error_kw=legend_props)
 
@@ -107,20 +107,17 @@ def phoneme_barplot(df_list: list, reference_df: pd.DataFrame, legend_list: list
     ax.set_xticklabels(["/" + x.lower() + "/" for x in reference_df_phoneme.values], rotation=45, fontsize=format_dict["fontsize"])
     ax.tick_params(axis='both', which='major', labelsize=format_dict["fontsize"])
 
-    #plt.xlim([-0.6,len(reference_df)-0.4])
     plt.ylim([-0.2,0.6])
     plt.ylabel("Relative phoneme error", fontsize=format_dict["fontsize"])
-    #plt.legend(fontsize=format_dict["fontsize"])
 
-    plt.legend(fontsize=7,
-               loc='upper center', bbox_to_anchor=(0.5, +1.2),
+    plt.legend(fontsize=format_dict["legend_fontsize"],
+               loc='upper center', bbox_to_anchor=(0.5, +1.3),
                fancybox=True, shadow=True, ncol=num_architectures)
 
     plt.tight_layout()
     fig.tight_layout()
     fig.set_size_inches(format_dict["width_fig"], format_dict["height_fig"])
 
-    #plt.show()
     plt.savefig("figures/phoneme_error_2020_11_10.pdf",bbox_inches='tight',pad_inches = 0.005)
 
 
