@@ -18,9 +18,12 @@ Put your wer_details experiments in the same format as the other experiments int
 Adapt the script analysis.py to your own use case, i.e legend title should represent your own ASR architectures.
 
 
+### Explanation for myself
 
+Aligns based on Levensteihn distance on phoneme-level
+sklearn version 0.25 will deprecate labels argument
 
 ### TODO
 
 * Create environment.yml file
-
+* Stress cleaning is written in a redundant, somewhat idiotic way -> should be changed
