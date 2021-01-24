@@ -2,16 +2,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import matplotlib
-import itertools
-
+import os
+from typing import List
+from corpus_2 import WERDetails
+from scipy.stats import pearsonr
 # Sets to a nicer font type
 matplotlib.rcParams['mathtext.fontset'] = 'stix'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
 
 
-def moa_to_phonemes(moa: str) -> list:
+def moa_to_phonemes(moa: str) -> List[str]:
+    """
+
+    Turns a Manner of Articulation feature into the corresponding set of phonemes
+
+    :param moa:
+    :return:
+    """
     assert moa in ["Vowel", "Plosive", "Nasal", "Fricative", "Affricates", "Approximant"]
-    converter_table = pd.read_csv("PhoneSet_modified.csv")
+    converter_table = pd.read_csv(os.path.join(os.path.dirname(__file__),"PhoneSet_modified.csv"))
     converter_table = converter_table[converter_table['ARPAbet'].notna()]
     converter_table = converter_table.fillna(0)
 
@@ -21,18 +30,29 @@ def moa_to_phonemes(moa: str) -> list:
     moas = moa_filter.index[moa_filter == 1].values
     return moas
 
-def articulatory_barplot(poa_afer: list, label_list: list, reference_label: list):
+def round_to_n(x, n):
+    return round(x, -int(np.floor(np.sign(x) * np.log10(abs(x)))) + n)
+
+def articulatory_barplot(poa_afer: list, label_list: list, reference_label: list, filename: str, phoneme_count: np.ndarray, per: list):
+    """
+    Generates articulatory barplot
+
+    :param poa_afer:
+    :param label_list:
+    :param reference_label:
+    :return:
+    """
 
     format_dict = {
         "width_fig": 3.14,
         "height_fig": 3.14 * 0.8, # 0.62
         "dpi": 100,
         "width": 0.13, # the width of the bars
-        "fontsize": 7
+        "fontsize": 7,
+        "capsize": 1.5
     }
 
-
-    num_architectures = 5
+    num_architectures = len(label_list)
     x = np.arange(len(reference_label))
 
     mean_experiments = list()
@@ -53,77 +73,116 @@ def articulatory_barplot(poa_afer: list, label_list: list, reference_label: list
         mean_experiments.append(mean_afer)
         std_experiments.append(std_afer)
 
+    #width_logic = np.linspace(start=-format_dict["width"]*2,stop=format_dict["width"],num=num_architectures)
 
-    fig_fontsize = 6 # 7
+    # Phoeme counts
 
-    width_logic = np.linspace(start=-format_dict["width"]*2,stop=format_dict["width"],num=num_architectures)
+    wer_details = WERDetails("../experiments/baseline/wer_details/per_utt", skip_calculation=True)
+    phoneme_labels = per[0][0][0]
+
+    if "moa" in filename:
+        af_labels = np.array([wer_details.phoneme_to_moa(phoneme_label) for phoneme_label in phoneme_labels])
+    if "poa" in filename:
+        af_labels = np.array([wer_details.phoneme_to_poa(phoneme_label) for phoneme_label in phoneme_labels])
+
+    phoneme_counts = np.mean(phoneme_count,axis=0)
+    af_counts = [round_to_n(np.sum(phoneme_counts[np.where(af_labels == af)]),2) for af in reference_label]
 
     fig = plt.figure(num=None, figsize=(format_dict["width_fig"], format_dict["height_fig"]),
                     dpi=format_dict["dpi"], facecolor='w', edgecolor='k')
 
+    markers = ["v","^","<",">","x"]
     for i in range(num_architectures):
-        legend_props = {"elinewidth": 0.5}
-        plt.bar(x + format_dict["width"]/2 + width_logic[i],
-                    mean_experiments[i],format_dict["width"],
-                    label=label_list[i],yerr=std_experiments[i],
-                    capsize=1.0, error_kw=legend_props)
+        # legend_props = {"elinewidth": 0.5}
+        # plt.bar(x + format_dict["width"]/2 + width_logic[i],
+        #             mean_experiments[i],format_dict["width"],
+        #             label=label_list[i],yerr=std_experiments[i],
+        #             capsize=format_dict["capsize"], error_kw=legend_props)
+        plt.plot(x, mean_experiments[i], markersize=4, marker=markers[i])
+        plt.fill_between(x, mean_experiments[i] - std_experiments[i], mean_experiments[i] + std_experiments[i],
+                         alpha=0.2)
+        r, p = pearsonr(af_counts, mean_experiments[i])
+        print(label_list[i], " correlation btw data amount and performance", r, "p value", p)
 
-    ax = plt.gca()
+
+        ax = plt.gca()
     ax.set_axisbelow(True)
     ax.yaxis.grid(color='gray', linestyle='dashed',which="major")
 
     ax.axhline(y=0, color="black",linewidth=0.8)
     ax.set_xticks(x)
 
-    ax.tick_params(axis='both', which='major', labelsize=fig_fontsize, pad=1)
-    ax.set_xticklabels(reference_label, rotation=45, fontsize=fig_fontsize)
+    ax.tick_params(axis='both', which='major', labelsize=format_dict["fontsize"], pad=1)
 
-    plt.ylabel("RAFER",fontsize=fig_fontsize)
+    reference_label_to_plot = [ref + " " + str(int(af_counts[i])) for i,ref in enumerate(reference_label)]
+    ax.set_xticklabels(reference_label_to_plot, rotation=45, fontsize=format_dict["fontsize"])
 
-    plt.legend(fontsize=6,
-               loc='upper center', bbox_to_anchor=(0.5, +1.35),
+    plt.ylabel("AFER (%)",fontsize=format_dict["fontsize"])
+
+    plt.legend(label_list, fontsize=6,
+               loc='upper center', bbox_to_anchor=(0.5, +1.32),
                fancybox=True, shadow=True, ncol=(num_architectures//2))
-
+    plt.xlim([0,len(mean_experiments)])
+    plt.ylim([20,80])
     plt.tight_layout(pad=0)
     fig.tight_layout(pad=0)
     fig.set_size_inches(format_dict["width_fig"], format_dict["height_fig"])
-    plt.show()
 
-def phoneme_barplot(per_list: list, counts_holder: list, legend_val: list):
+    current_dir = os.path.dirname(__file__)
+    plt.savefig(os.path.join(current_dir, "figures/" + filename + ".pdf"), bbox_inches='tight', pad_inches=0.005)
+    #plt.show()
 
-    reference_label = [moa_to_phonemes(moa) for moa in ["Vowel", "Plosive", "Nasal", "Fricative", "Affricates", "Approximant"]]
-    reference_label = list(itertools.chain(*reference_label))
-    reference_label.remove("AX")
-    reference_label.remove("AXR")
-    reference_label.remove("EM")
-    reference_label.remove("EN")
-    reference_label.remove("EL")
 
-    counts_holder = np.mean(counts_holder,axis=0)
-    #print(counts_holder)
-    #print(len(counts_holder))
-    #print(len(per_list[0][0][0]))
-    under_hundred = [per_list[0][0][0][i] for i in range(len(counts_holder)) if counts_holder[i] < 100]
+def phoneme_barplot(per_list: list, mean_phoneme_count: list, experiment_names: list, filename: str):
+    """
+    Produces the phoneme barplot for the paper
 
-    for phoneme in under_hundred:
-        if phoneme in reference_label:
-            reference_label.remove(phoneme)
-    #print(len(reference_label))
-    #print(reference_label)
-    num_experiments = 5
+    :param per_list: list containing the values for the PER
+    :param mean_phoneme_count: list containing ints
+    :param experiment_names: contains name of the experiments
+    :param filename: filename (str) to use for saving
+    :return:
+    """
+
+    reference_label = list()
+    cat_lengths = list()
+    cats = ["Vowel", "Plosive", "Nasal", "Fricative", "Affricates", "Approximant"]
+    num_experiments = len(experiment_names)
+
+    mean_phoneme_count = np.mean(mean_phoneme_count, axis=0)
+
+    phonemes_under_hundred = [per_list[0][0][0][i] for i in range(len(mean_phoneme_count)) if mean_phoneme_count[i] < 100]
+    # First, we filter the labels, the pre-determined list contains phonemes which will never occur
+    # Second, we filter phonemes that have less than 100 Ns, because those are too unreliable for analysis
+    phonemes_that_will_never_occur = ["AX","AXR","EM","EN","EL"]
+    for moa in cats:
+        phonemes = list(moa_to_phonemes(moa))
+        for phoemes_to_remove in phonemes_that_will_never_occur:
+            if phoemes_to_remove in phonemes: phonemes.remove(phoemes_to_remove)
+        for phoneme_under_hundred in phonemes_under_hundred:
+            if phoneme_under_hundred in phonemes: phonemes.remove(phoneme_under_hundred)
+
+        # If no phonemes are left, drop the category from visualisation
+        if len(phonemes) == 0:
+            cats.remove(moa)
+        else:
+            cat_lengths.append(len(phonemes))
+        reference_label.extend(phonemes)
+
     mean_experiments = list()
     std_experiments = list()
-    for experiment in per_list:
+    for i,experiment in enumerate(per_list):
         selected_per = np.zeros((len(experiment),len(reference_label)))
-        for i, labelper in enumerate(experiment):
+        for j, labelper in enumerate(experiment):
             label, per = labelper
-            #assert label == reference_label
-            #print(label)
+
             idx = [label.index(lab) for lab in reference_label]
-            #print(idx)
             per = np.array(per)[idx]
-            #print(len(per))
-            selected_per[i,:] = per
+            selected_per[j,:] = per
+
+            # At first step of nested, select the correspondingt mean phoneme counts
+            if (i == 0) & (j == 0):
+                selected_mean_phoneme_count = mean_phoneme_count[idx]
 
         mean_per = np.mean(selected_per,axis=0)
         std_per = np.std(selected_per,axis=0)
@@ -133,7 +192,7 @@ def phoneme_barplot(per_list: list, counts_holder: list, legend_val: list):
 
     format_dict = {
         "width_fig": 6.6,
-        "height_fig": 3.14 * 0.60,
+        "height_fig": 3.14 * 0.75,
         "dpi": 100,
         "width": 0.40, # the width of the bars
         "fontsize": 10,
@@ -142,86 +201,127 @@ def phoneme_barplot(per_list: list, counts_holder: list, legend_val: list):
     }
 
     fig_fontsize = 6  # 7
-    width_logic = np.linspace(start=-format_dict["width"] * 2, stop=format_dict["width"], num=num_experiments)
 
     fig = plt.figure(num=None, figsize=(format_dict["width_fig"], format_dict["height_fig"]),
                      dpi=format_dict["dpi"], facecolor='w', edgecolor='k')
     x = np.arange(len(mean_experiments[0]))
 
-    legend_props = {"elinewidth": 0.5}
+    markers = ["v","^","<",">","x"]
+    print("Phoneme")
     for i in range(num_experiments):
-        plt.plot(x,mean_experiments[i],markersize=4,marker="x")
+        plt.plot(x,mean_experiments[i],markersize=4,marker=markers[i])
         plt.fill_between(x,mean_experiments[i] - std_experiments[i], mean_experiments[i] + std_experiments[i],alpha=0.2)
-        #plt.scatter(x + 0.1 * i - 0.2,mean_experiments[i],s=6)
-        #plt.bar(x + format_dict["width"] / 2 + width_logic[i],
-                #mean_experiments[i], format_dict["width"],
-                #label=reference_label, yerr=std_experiments[i],
-                #capsize=1.0, error_kw=legend_props)
+        r, p = pearsonr(mean_experiments[i],selected_mean_phoneme_count)
+        print(experiment_names[i], " correlation btw data amount and performance", r, "p-value", p)
+        print(experiment_names[i])
+
+        # Sort best 5 phonemes
+        best_phoneme_idx = np.argsort(mean_experiments[i], axis=0)[:5]
+        print(np.array(reference_label)[best_phoneme_idx])
+
     ax = plt.gca()
     ax.set_xticklabels(reference_label, rotation=45, fontsize=fig_fontsize)
 
     ax.yaxis.grid(color='gray', linestyle='dashed', which="major")
     ax.xaxis.grid(color='gray', linestyle='dashed', which="major")
-    #ax.axhline(y=0, color="black", linewidth=0.8)
     ax.set_xticks(x)
 
     ax.set_xticklabels(["/" + x.lower() + "/" for x in reference_label], rotation=45, fontsize=format_dict["fontsize"])
     ax.tick_params(axis='both', which='major', labelsize=format_dict["fontsize"])
 
-    plt.ylim([0,85])
+    plt.ylim([20,85])
     plt.xlim([0,len(reference_label)-1])
     plt.ylabel("PER (%)", fontsize=format_dict["fontsize"])
 
-    plt.legend(legend_val, fontsize=format_dict["legend_fontsize"],
+    plt.legend(experiment_names, fontsize=format_dict["legend_fontsize"],
                loc='upper center', bbox_to_anchor=(0.5, +1.3),
                fancybox=True, shadow=True, ncol=num_experiments)
 
-    props = dict(connectionstyle='angle, angleA=180, angleB=90, rad=0',
+    # This part produces the annotations in the bottom
+    props = dict(connectionstyle='angle, angleA=180, angleB=90, rad=0', # the angle parameter controls the bent lines
                  arrowstyle='-',
-                 shrinkA=1,
-                 shrinkB=1,
+                 shrinkA=1, # this controls the bounding box extent around the text
+                 shrinkB=1, # same as above
                  color="black",
                  lw=1)
 
-    cats = ["Vowel", "Plosive", "Nasal", "Fricative", "Approximant"]
-    cat_lengths = [13,6,3,7,4]
+
     accumulator = 0
     for i,cat_length in enumerate(cat_lengths):
         cat = cats[i]
         ax.annotate(cat,
-                    xy=(accumulator, -15),
-                    xytext=(accumulator + cat_length / 2 - 1, -30.5),
+                    xy=(accumulator, -0),
+                    xytext=(accumulator + cat_length / 2 - 1, -5.5),
                     annotation_clip=False,
                     fontsize=8,
                     arrowprops=props
         )
         ax.annotate(cat,
-                    xy=(accumulator + cat_length - 1, -15),
-                    xytext=(accumulator + cat_length / 2 - 1, -30.5),
+                    xy=(accumulator + cat_length - 1, -0),
+                    xytext=(accumulator + cat_length / 2 - 1, -5.5),
                     annotation_clip=False,
                     fontsize=8,
                     arrowprops=props
         )
         accumulator += cat_length
 
-
-
     plt.tight_layout()
     fig.tight_layout()
     fig.set_size_inches(format_dict["width_fig"], format_dict["height_fig"])
 
-    plt.show()
+    current_dir = os.path.dirname(__file__)
+    plt.savefig(os.path.join(current_dir,"figures/" + filename + ".pdf"),bbox_inches='tight',pad_inches = 0.005)
 
-def visualise_confusion_matrices(confusion_matrices: list, legend_list: list) -> None:
+
+
+def visualise_confusion_matrices(confusion_matrices: list, experiment_name_list: list, filename: str) -> int:
     """
-
-    Methods which accepts either a list of pd.Dataframes containing the confusion matrices
+    Method which accepts a list of np.ndarrays containing the confusion matrices
     or a list of strings which contain the path to them
-    :param confusion_matrices:
 
-    :return:
+    Does not return anything, has the sideeffect of a visualisation
+    :param confusion_matrices: list of np.ndarrays containing the confusion matrices
+    :param experiment_name_list: a list of str containing the name of each experiment
+    :param filename: prefix name to use when saving figure as pdf
+
     """
 
+    def sum_confusion_matrices(confusion_matrices: list, reference_label: str) -> list:
+        """
+        Sums the confusion matrices according to the reference label
+        :param confusion_matrices:
+        :param reference_label:
+        :return: a list containing the confusion matrix for each experiment
+        """
+
+        # This is to check that the labels are consistent when summing the columns and rows together
+        consistency_label = confusion_matrices[0][0][1]
+
+        cm_list = list()
+        for i, experiment in enumerate(confusion_matrices):
+            selected_cm = np.zeros((len(experiment), len(reference_label), len(reference_label)))
+            for j, cmlabel in enumerate(experiment):
+                cm, label = cmlabel
+                assert label == consistency_label
+                idx = [label.index(lab) for lab in reference_label]
+                cm = np.array(cm)[idx, :]
+                cm = cm[:, idx]
+                selected_cm[j, :, :] = cm
+
+            sum_cm = np.sum(selected_cm, axis=0)
+
+            # Accuracy should show, how much gt was classified predicted class j so it should row wise
+            # Axis=1 is row wise normalisation
+            if i == 0:
+                sum_cm = sum_cm / np.sum(sum_cm, axis=1) * 100
+            else:
+                sum_cm = sum_cm / np.sum(sum_cm, axis=1) * 100 - cm_list[0]
+
+            cm_list.append(sum_cm)
+
+        return cm_list
+
+    # Visualisation parameters
     format_dict = {
         "width_fig": 6.6,
         "height_fig": 3.14 * 0.60,
@@ -232,33 +332,21 @@ def visualise_confusion_matrices(confusion_matrices: list, legend_list: list) ->
         "capsize": 1.5
     }
 
-    num_experiments = 5
+    # First example will be reference label, insertion errors are removed from the visualisation
+    # Pass by value is needed here because .remove() works in-place on the reference which causes problems with assert
+    reference_label = confusion_matrices[0][0][1].copy()
 
-    reference_label = confusion_matrices[0][0][1]
-    reference_label.remove(" ")
-    cm_list = list()
-    for i, experiment in enumerate(confusion_matrices):
-        selected_cm = np.zeros((len(experiment), len(reference_label), len(reference_label)))
-        for j, cmlabel in enumerate(experiment):
-            cm, label = cmlabel
+    #if " " in reference_label:
+    #    reference_label.remove(" ")
 
-            idx = [label.index(lab) for lab in reference_label]
-            cm = np.array(cm)[idx,:]
-            cm = cm[:,idx]
-            selected_cm[j, :, :] = cm
 
-        sum_cm = np.sum(selected_cm, axis=0)
 
-        #assert np.sum(sum_cm,axis=0) == np.sum(sum_cm,axis=1)
-        if i == 0:
-            sum_cm = sum_cm / np.sum(sum_cm,axis=0) * 100
-        else:
-            sum_cm = sum_cm / np.sum(sum_cm, axis=0) * 100 - cm_list[0]
+    # We are making the hard assumption that the labels will be ordered in the same way, this was checked previously
+    # that this should be the case
+    cm_list = sum_confusion_matrices(confusion_matrices,reference_label)
 
-        cm_list.append(sum_cm)
     fig = plt.figure(num=None, figsize=(format_dict["width_fig"], format_dict["height_fig"]),
                      dpi=format_dict["dpi"], facecolor='w', edgecolor='k')
-
 
     num_confusion_matrices = len(confusion_matrices)
 
@@ -266,14 +354,14 @@ def visualise_confusion_matrices(confusion_matrices: list, legend_list: list) ->
         plt.subplot(1,num_confusion_matrices,i+1)
 
         im = plt.imshow(confusion_matrix,cmap="RdYlGn")
-        cbar = plt.colorbar(im, fraction=0.046, pad=0.04)
+        cbar = plt.colorbar(im, fraction=0.046, pad=0.04) # this is a Stack Overflow copy paste for the sidebar
         cbar.ax.tick_params(labelsize=6)
 
-
+        # The relative accuracy is scaled differently for the sake of argument
         if i == 0:
             plt.clim(-100, 100)
         else:
-            plt.clim(-10,10)
+            plt.clim(-30,30)
 
         # This is needed so the numbers are right aligned
         for t in cbar.ax.get_yticklabels():
@@ -287,8 +375,14 @@ def visualise_confusion_matrices(confusion_matrices: list, legend_list: list) ->
             ax.set_xticks(np.arange(len(reference_label)))
             ax.set_yticks(np.arange(len(reference_label)))
             # ... and label them with the respective list entries
-            ax.set_xticklabels(reference_label)
-            ax.set_yticklabels(reference_label)
+
+            x_labels = reference_label.copy()
+            y_labels = reference_label.copy()
+            x_labels[0] = "Deleted"
+            y_labels[0] = "Inserted"
+
+            ax.set_xticklabels(x_labels)
+            ax.set_yticklabels(y_labels)
 
             # Rotate the tick labels and set their alignment.
             plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
@@ -306,14 +400,20 @@ def visualise_confusion_matrices(confusion_matrices: list, legend_list: list) ->
                 labelbottom=False)  # labels along the bottom edge are off
 
         # Setting an extra explanatory label for the percentages
+        if i == 0:
+            plt.xlabel("predicted")
+            plt.ylabel("ground truth")
         if i == 4:
             plt.ylabel("% (relative) accuracy",fontsize=7,labelpad=27)
             ax = plt.gca()
             ax.yaxis.set_label_position("right")
-        plt.title(legend_list[i],fontsize=7)
+        plt.title(experiment_name_list[i], fontsize=7)
 
     plt.subplots_adjust(wspace=0.40)
     fig.set_size_inches(format_dict["width_fig"], format_dict["height_fig"])
-    #plt.savefig("figures/" + filename + ".pdf",bbox_inches='tight',pad_inches = 0.005)
 
-    plt.show()
+    current_dir = os.path.dirname(__file__)
+    #plt.show()
+    plt.savefig(os.path.join(current_dir,"figures/" + filename + ".pdf"),bbox_inches='tight',pad_inches = 0.005)
+
+    return 1
