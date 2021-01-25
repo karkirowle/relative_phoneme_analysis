@@ -1,0 +1,430 @@
+# lattice-scale --inv-acoustic-scale=8 "ark:gunzip -c /tudelft.net/staff-bulk/ewi/insy/SpeechLab/siyuanfeng/software/kaldi/egs/relocated_from_DSP/TUD_for_journal/exp_for_kaldi/dnn4_fmllr_tri4b_m_and_f_ocancer_0.008_deltas_2500_15000_lda_3500_18000_sat_6300_60000/4/decode_partition_test_dnn4_sbn_0.1_w_scoring/lat.*.gz|" ark:- | lattice-add-penalty --word-ins-penalty=0.0 ark:- ark:- | lattice-best-path --word-symbol-table=/tudelft.net/staff-bulk/ewi/insy/SpeechLab/siyuanfeng/software/kaldi/egs/relocated_from_DSP/TUD_for_journal/exp_for_kaldi/GMM_HMM_training_deltas_2500_15000_lda_3500_18000_sat_6300_60000_all/4/tri4b_ali/../tri4b/graph_tgpr/words.txt ark:- ark,t:- | utils/int2sym.pl -f 2- /tudelft.net/staff-bulk/ewi/insy/SpeechLab/siyuanfeng/software/kaldi/egs/relocated_from_DSP/TUD_for_journal/exp_for_kaldi/GMM_HMM_training_deltas_2500_15000_lda_3500_18000_sat_6300_60000_all/4/tri4b_ali/../tri4b/graph_tgpr/words.txt | local/wer_hyp_filter > /tudelft.net/staff-bulk/ewi/insy/SpeechLab/siyuanfeng/software/kaldi/egs/relocated_from_DSP/TUD_for_journal/exp_for_kaldi/dnn4_fmllr_tri4b_m_and_f_ocancer_0.008_deltas_2500_15000_lda_3500_18000_sat_6300_60000/4/decode_partition_test_dnn4_sbn_0.1_w_scoring/scoring_kaldi/penalty_0.0/8.txt 
+# Started at Fri Aug 28 13:21:59 CEST 2020
+#
+lattice-best-path --word-symbol-table=/tudelft.net/staff-bulk/ewi/insy/SpeechLab/siyuanfeng/software/kaldi/egs/relocated_from_DSP/TUD_for_journal/exp_for_kaldi/GMM_HMM_training_deltas_2500_15000_lda_3500_18000_sat_6300_60000_all/4/tri4b_ali/../tri4b/graph_tgpr/words.txt ark:- ark,t:- 
+lattice-add-penalty --word-ins-penalty=0.0 ark:- ark:- 
+lattice-scale --inv-acoustic-scale=8 'ark:gunzip -c /tudelft.net/staff-bulk/ewi/insy/SpeechLab/siyuanfeng/software/kaldi/egs/relocated_from_DSP/TUD_for_journal/exp_for_kaldi/dnn4_fmllr_tri4b_m_and_f_ocancer_0.008_deltas_2500_15000_lda_3500_18000_sat_6300_60000/4/decode_partition_test_dnn4_sbn_0.1_w_scoring/lat.*.gz|' ark:- 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100001, best cost 39.8099 + -2774.32 = -2734.51 over 998 frames.
+10100001 WHILE IT WAS <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100002, best cost 188.506 + -2792.6 = -2604.1 over 998 frames.
+10100002 IN TIME AND I WAS ABLE TO ENTERTAIN HIM PLAY EVERYTHING IS THAT MIKE LANDFILL THE EVER SO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100003, best cost 204.738 + -2769.93 = -2565.19 over 998 frames.
+10100003 SO WHO TO FOLD I WAS LOOKING FALL UNTIL WE PROBE INTO HOW WONDERFUL MIGHT HAVE A HIGH SCHOOL IN THE <UNK> HIM WE HAVE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100004, best cost 242.098 + -2731.63 = -2489.54 over 998 frames.
+10100004 MUCH OF THE KIND WHO WILL HAVE TO LIVE TICKET AND MY WHOLE IF THE AUTO I HAVE FAMILY UNKNOWN WHEN WILL LOWER THE THOUGHT OF IT IN JUNE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100005, best cost 249.875 + -2866.97 = -2617.1 over 998 frames.
+10100005 WHEN A SEVENTEEN SO WAS ILL WIND OF WITH TIME AND HEALTH I WANT TO LIVE GET DEATH HAVE THAT I TELL IT LIKE DOCTOR I. 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100006, best cost 171.242 + -2761.63 = -2590.39 over 998 frames.
+10100006 HAVE LOWER NOT ALL MY CHILD AT I. M. I. WEILL FU LEAD TO A BUY OUT 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100007, best cost 179.636 + -2671.88 = -2492.25 over 998 frames.
+10100007 I FEEL VERY ONES WHO DON'T THINK I HAVE BEEN SO IN APRIL I KNEW OF THE TYPE OF <UNK> I WISH I KNEW 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100008, best cost 162.094 + -2689.74 = -2527.65 over 998 frames.
+10100008 A WALL OF ABOUT ONE AS BUT <UNK> GOOD EFFECT OF WHEN THE EYE <UNK> THEM 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100009, best cost 141.291 + -2787.66 = -2646.37 over 998 frames.
+10100009 AT THE THOUGHT OF MY <UNK> MEMO FROM MY EYE CAT HER GET 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100010, best cost 238.208 + -2803.58 = -2565.37 over 998 frames.
+10100010 IT IS TRUE THAT LAW LIKE I CAN FEEL ONE FOR THE PLANT WHERE I COULD HAVE GOTTEN MOVE THE LIGHT TO SIGN UP MY MOUTH <UNK> WHO BECAUSE I. 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100011, best cost 188.78 + -2734.3 = -2545.52 over 998 frames.
+10100011 I WAS VERY PAINFUL SO FIVE AND IT WILL ADD TO THE VILLAIN FALL OFF THE GLUE IS A LACK OF THE <UNK> OF FAITH 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100012, best cost 141.226 + -2751.68 = -2610.46 over 998 frames.
+10100012 <UNK> WHOM I <UNK> FILM HAVE AN OPERA WILLING TO ALL I KNOW MY HAT 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100013, best cost 169.547 + -2685.41 = -2515.86 over 998 frames.
+10100013 <UNK> OFF OF <UNK> WELL THE SOUL OF IN MY MOUTH WITH FIVE <UNK> AWAY AT HIM WITH <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100014, best cost 216.352 + -2752.42 = -2536.06 over 998 frames.
+10100014 IN MY MOUTH <UNK> ALL THE FULL OF M. I. MODEL OF A FULL PAINFUL IDEA BUT AS ALLOW MY <UNK> A WHITE <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100015, best cost 162.184 + -2644.85 = -2482.67 over 998 frames.
+10100015 OF ALL I. I. <UNK> AND THOUGH THE FAT WHAT I'VE MADE A LOT OF MODERN <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100016, best cost 191.028 + -2669.51 = -2478.48 over 998 frames.
+10100016 IN THE U. R. I. FORECASTS A WORTHEN NO MILE MAY AND MANAGE THE WAR AND THE OUT OF HAWK 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100017, best cost 133.82 + -2673.01 = -2539.19 over 998 frames.
+10100017 ALL THE WAY TO WHAT THE I. M. I. IT WAS SO PAINFUL BIG I. 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100018, best cost 215.472 + -2667.04 = -2451.57 over 998 frames.
+10100018 IT IS GET INVOLVED WITH A LAW THAT SECOND OR THIRD OUT OF WIN OVER READY EIGHTY SEVEN AND ONE EIGHTH THOUGHT IS WELL AWARE THAT <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100019, best cost 167.881 + -2710.99 = -2543.11 over 998 frames.
+10100019 SO IT'S A FAT <UNK> LACK OF THE GARDEN OF EVIDENCE THAT WHILE ALL HOLD SO WHEN 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100020, best cost 119.213 + -2732.22 = -2613 over 998 frames.
+10100020 I HAD TO MOVE OTTO POEHL I <UNK> WHITE HAD BEEN WHY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100021, best cost 129.84 + -2701.67 = -2571.83 over 998 frames.
+10100021 I HEAR OPERA WITH THE IDEA WHO ALONG WITH THOUGHT I WAS <UNK> WHEN 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100022, best cost 172.568 + -2709.85 = -2537.28 over 998 frames.
+10100022 DOCTOR FALL <UNK> DOCTOR BOTH HUGH <UNK> FLOCK SO <UNK> WHO <UNK> OFTEN PHONE THIN 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100023, best cost 118.102 + -2638.15 = -2520.05 over 998 frames.
+10100023 I DOUBT TO WHAT THE MOUTH EYE TO EYE AND THE BLOCK 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100024, best cost 101.567 + -2635.96 = -2534.39 over 998 frames.
+10100024 THE <UNK> SAYS I WAS <UNK> I. <UNK> BOOTH A FOOD <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100025, best cost 150.156 + -2713.02 = -2562.86 over 998 frames.
+10100025 ALL FOUR WERE VERY <UNK> OF FEEL MUCH AS A LOW I <UNK> WITH TOP OF MY <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100026, best cost 166.907 + -2751.36 = -2584.45 over 998 frames.
+10100026 I HALF HIGHLIGHT HILL WHERE I CAME OUT OF FURTHER THE I <UNK> MY <UNK> WITH 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100027, best cost 117.1 + -2659.54 = -2542.44 over 998 frames.
+10100027 SWOLLEN O. M. I. <UNK> WAS <UNK> OUT BUT I DOUBT 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100028, best cost 167.402 + -2689.93 = -2522.52 over 998 frames.
+10100028 AT OUT BECAUSE <UNK> NOW I CAN'T GET MY <UNK> MY <UNK> A <UNK> SWOLLEN SO I 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100029, best cost 126.571 + -2687.64 = -2561.07 over 998 frames.
+10100029 OUTPUT SO MY FELL I <UNK> I <UNK> MY IT ALSO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100030, best cost 173.309 + -2648.89 = -2475.58 over 998 frames.
+10100030 IT OUT AND THE EYE AND LIEN PLIGHT <UNK> K. I. O. WILL HAVE ANY CAME I <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100031, best cost 215.937 + -2722.64 = -2506.7 over 998 frames.
+10100031 ALL OUT AND THE ONLY THING I CAN I WON'T GO GET OUT WILL EVEN SO THE SECOND COME OUT OF A CAME A. T. I. 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100032, best cost 173.475 + -2560.75 = -2387.27 over 998 frames.
+10100032 WHEN I TELL IT MIGHT ALSO ARE THE NET AT WHO KNOW I KNOW MY <UNK> PHOTO I'M NOT 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100033, best cost 195.502 + -2601.33 = -2405.83 over 998 frames.
+10100033 FOOD A HIDDEN ANYTHING YET WHEN I TELL HOTLY WHAT THEY WILL TELL NOT ALL TO EYE TO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100034, best cost 134.178 + -2665.72 = -2531.54 over 998 frames.
+10100034 TRY MY <UNK> MY <UNK> BOUGHT <UNK> IN <UNK> AND YET BUT IF THE EYE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100035, best cost 215.331 + -2739.45 = -2524.12 over 998 frames.
+10100035 HAPPILY THE HART WHO WRITE OFF THE MARK WITH COMMUNIQUE I <UNK> IT ALL TO FILL OUT OF THE MOVE FOR FULL OF <UNK> MIGHT GRANT GO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100036, best cost 171.01 + -2634.57 = -2463.56 over 998 frames.
+10100036 I <UNK> THAT WAS THE BURN HOME TO THE HOT <UNK> AND THE THOUGHT OF COMMUNICATION TO EYE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100037, best cost 151.53 + -2705.12 = -2553.59 over 998 frames.
+10100037 OFF OF THE ADOPTIVE <UNK> WHITE AND BLACK EYE WILL WITH PEOPLE WHO AREN'T GOING TO HAVE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100038, best cost 193.407 + -2762.9 = -2569.5 over 998 frames.
+10100038 I. I. <UNK> BOOTH AND WHAT THE DOCTOR LIVE IN WOOING OF GOLD TAKEN PEOPLE TO WALL LAW THAT YOU 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100039, best cost 133.846 + -2531.49 = -2397.65 over 998 frames.
+10100039 AND THROUGH THE GUN TO GET ACT WITH THE DAY OF PLAY YOU HAVE TO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100040, best cost 136.776 + -2699.74 = -2562.96 over 998 frames.
+10100040 BECAUSE THERE ARE LEERY OF FLIGHT FROM <UNK> TO <UNK> MY <UNK> I WOULD NEVER BE THE FAMED 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100041, best cost 83.4946 + -2721.37 = -2637.87 over 998 frames.
+10100041 SO WHAT BECAME OF A BIG I. 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100042, best cost 208.759 + -2768.18 = -2559.43 over 998 frames.
+10100042 HAVE QUALMS WITH MY TOWN WHARF AND HOME MY SWOLLEN WITH ANOTHER AT ALL A <UNK> EYE ONE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100043, best cost 161.633 + -2809.4 = -2647.77 over 998 frames.
+10100043 HOME BUT WAS <UNK> WITH CRY FED MIGHT HOURLY WHEN BILL THE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100044, best cost 227.931 + -2718.05 = -2490.12 over 998 frames.
+10100044 ONLY IF NOT WHY THE TYPES OF THAT THE EARTH AND THAT HAVE THAT LEAVE BRIEFLY AND OF COMMONS <UNK> ON OUT A FULL <UNK> SO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100045, best cost 220.397 + -2750.42 = -2530.02 over 998 frames.
+10100045 A LOT ARE LITTLE GIRL WHO HELD THOUGH THE <UNK> AND SO MAD I. MEMO I HAD MY FUNCTIONING OH BUT IT WAS MY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100046, best cost 197.492 + -2706.92 = -2509.42 over 998 frames.
+10100046 <UNK> <UNK> FOR WITH IVAN <UNK> ALL BUT AT WITH LOVE BUT FAN OUT OF THE LACK OF A SOFT <UNK> EYE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100047, best cost 134.442 + -2649.36 = -2514.92 over 998 frames.
+10100047 I <UNK> UNO IS <UNK> ENOUGH RADIATION MAKE THE DEATH SO ON 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100048, best cost 169.85 + -2781.53 = -2611.68 over 998 frames.
+10100048 I HAVE I HAVE TWO FEET BY SO I. I. <UNK> NIGHT NOW WITH A COMPLEX SO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100049, best cost 183.361 + -2697.58 = -2514.21 over 998 frames.
+10100049 THE GUISE OF THE LIVES OF THE OLD AND A LOT OF THE UNIT WAS A LITTLE <UNK> ON MY <UNK> MY FIFTH <UNK> LIKE HIM 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100050, best cost 172.796 + -2698.4 = -2525.6 over 998 frames.
+10100050 WITH THAT EVERYTHING I WHO FIRED AFTER SIX LIVES ON DEFAULTED OF THE LAW AND WITH PHONE CALL 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100051, best cost 152.209 + -2690.98 = -2538.77 over 998 frames.
+10100051 I HAVE A HIGH LOAN BECAME I <UNK> HIM TO KILL ARE KNOWN TO MAN THE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100052, best cost 180.938 + -2654.14 = -2473.2 over 998 frames.
+10100052 FOR THE WORK OF DON <UNK> TOPPED WITH I HAD MY ALL MY <UNK> I THINK IT WAS REVIVE THE HOME TO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100053, best cost 118.653 + -2730.06 = -2611.4 over 998 frames.
+10100053 OCTOBER WAS <UNK> WILL STOP HIM A LITTLE SUPPLY WHILE MY <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100054, best cost 87.604 + -2547.21 = -2459.61 over 998 frames.
+10100054 A COLLECTIVE BILL AS MUCH WITH THE EYE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100055, best cost 134.926 + -2693.63 = -2558.71 over 998 frames.
+10100055 WHEN CLUB MICHAEL TO <UNK> THEIR LOT WITH A FIVE TO FOUR <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100056, best cost 107.554 + -2604.42 = -2496.86 over 998 frames.
+10100056 I TRY TO GET YOU ANOTHER THE EMOTIONAL LIVE WITH <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100057, best cost 130.986 + -2727.91 = -2596.92 over 998 frames.
+10100057 FLOYD OF THE WITH MY <UNK> BACK AND FORTH <UNK> THE WHOLE WAS SOLD 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100058, best cost 154.634 + -2560.99 = -2406.35 over 998 frames.
+10100058 <UNK> WILL THE <UNK> OF THE GAIN WAS SO PAINFUL OF <UNK> UP <UNK> AND WHEN OWNER 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100059, best cost 215.745 + -2622.61 = -2406.86 over 998 frames.
+10100059 SO IN THE OTHER THINGS AND I'M GOING TO OBTAIN AND IT TO THOSE IN MY GOD I'M THINKING BEEN HAVING TO THE GUY YORK TAX 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100060, best cost 220.771 + -2776.81 = -2556.04 over 998 frames.
+10100060 TO SOME <UNK> IN A LAND THING VIEW OF TAX <UNK> FLIGHT OUT OF DAY I'VE TOP OF THAT ALL IS NOT TO SAY THAT WAS LAST 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100061, best cost 195.707 + -2735.19 = -2539.48 over 998 frames.
+10100061 IF YOU MIGHT ALSO SAW ITS TWO ISSUES I THOUGHT HO HUM OF FOR MY <UNK> CLUE OF WILLIE THE EYE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100062, best cost 164.07 + -2585.95 = -2421.88 over 998 frames.
+10100062 SAUL THING HE HAD MY FOOT WILSON WAS UP WITH I <UNK> MY <UNK> APPETITE THING 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100063, best cost 239.623 + -2692.46 = -2452.83 over 998 frames.
+10100063 BUT I KNEW I HAD TO EAT IT ALSO GOT WORD OF THE FLINT JULY HAD TO ROLL OUT A LINE WITH THE GOAL IS THE LACK OF TO A LOT OF HIS TO MY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100064, best cost 247.114 + -2717.56 = -2470.45 over 998 frames.
+10100064 A RIVAL OFFER AS IT WAS IN THE SAN JUAN SO WASN'T MORROW FAILED TO FILL IT WHEN WILL <UNK> IN MY GLASSES OFF OF LIFE <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100065, best cost 202.424 + -2707.32 = -2504.9 over 998 frames.
+10100065 THEY ADD A CHANT MY AT PAY UNTIL THE FIELD OF FOUR I WANT TO SIT DOWN AND TALK TO YOU IS THAT WAS ALL 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100066, best cost 213.225 + -2778.04 = -2564.81 over 998 frames.
+10100066 IN AN EIGHTH OF A CUP I FIVE YEN AND IF ONLY TO A HALF THE SITE ALLY HAT <UNK> FOOD WAS 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100067, best cost 160.199 + -2738.51 = -2578.31 over 998 frames.
+10100067 THAT MIGHT ALL HIS WITH AN EYE ON THE FLOOR IS THAT A LOT FULL LOW I <UNK> MY <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100068, best cost 178.343 + -2692.25 = -2513.9 over 998 frames.
+10100068 <UNK> WITH THE LINE FOR THE <UNK> WITH ADDED THAT WHETHER HE'LL KEEP THEM OUT THAT MY BLACK OF GOING TO HAVE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100069, best cost 138.589 + -2618.88 = -2480.29 over 998 frames.
+10100069 AND I FELT I CAN <UNK> IT WAS FROM BOTH ARE SO I THOUGHT I AND THE EYE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100070, best cost 164.762 + -2629.82 = -2465.05 over 998 frames.
+10100070 I <UNK> I <UNK> WITH A MIND AFTER <UNK> WITH WOULDN'T DO WHAT I WAS <UNK> MEHL I WAS VERY <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100071, best cost 157.228 + -2569.51 = -2412.28 over 998 frames.
+10100071 IT IS WHY I'M NOT TO ONE <UNK> OF MY <UNK> MY <UNK> WHERE THIS ALONE AND I 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100072, best cost 174.637 + -2626.5 = -2451.86 over 998 frames.
+10100072 I FEEL OF FAIRLY <UNK> WITH SO I <UNK> AT THE YALE FLEW I FELT THAT I LITTLE APPETITE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100073, best cost 170.692 + -2655.43 = -2484.74 over 998 frames.
+10100073 AND I GUESS I <UNK> THROUGH HIS LITTLE OF THE I FLY WITH AN EYE TO EYE WITH <UNK> QUARTER COP 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100074, best cost 198.652 + -2725.56 = -2526.91 over 998 frames.
+10100074 PRIVATE EYE <UNK> HAVE A SOFT HIT BY NOW YOU KNOW I PUT ALWAYS TELL ASKED GOT ALL OF THE HANDS 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100075, best cost 233.423 + -2789.87 = -2556.45 over 998 frames.
+10100075 TO OPEN HIS LIFE I CERTAINLY WHO THINK WELL I <UNK> YOU ALL IS THE ONLY ENOUGH FALL AND I TOLD MY HEAD I THINK NOT LAW 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100076, best cost 170.904 + -2837.03 = -2666.12 over 998 frames.
+10100076 I CAN LIVE IN OFF FALL I FEEL HELP WIN WITH AN EYE I HAVE NOW I'VE HAD A 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100077, best cost 194.714 + -2868.74 = -2674.03 over 998 frames.
+10100077 LAW BECAUSE MY <UNK> SHALLOW DOES NOT WHO LEAVE NO ROOF OF MY MILE <UNK> ANNA 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100078, best cost 126.693 + -2586.58 = -2459.89 over 998 frames.
+10100078 BY NOW TO FIT THE BAT <UNK> I <UNK> MY <UNK> WITH MY <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100079, best cost 139.576 + -2629.51 = -2489.93 over 998 frames.
+10100079 OR RUTH <UNK> HALL NOT WELL I HAD TO MY HASN'T HAD AN EYE ON 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100080, best cost 84.1438 + -2605.65 = -2521.51 over 998 frames.
+10100080 AND WHEN BUT MY <UNK> WHAT'S THE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100081, best cost 138.972 + -2689.69 = -2550.71 over 998 frames.
+10100081 AND WITH TOKYO WITH THEIR OWN AND IMPORTING FROM ME I HAD MY BUT NOW 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100082, best cost 131.255 + -2666.34 = -2535.08 over 998 frames.
+10100082 SO BUT <UNK> WILL CAP I <UNK> MY <UNK> OF THE ISLAND CALL <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100083, best cost 169.631 + -2842.08 = -2672.45 over 998 frames.
+10100083 AND IN MY <UNK> I CAUGHT MYSELF <UNK> THE WALL MY DON'T OWE THE HEIGHT OF MY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100084, best cost 88.2054 + -2529.86 = -2441.65 over 998 frames.
+10100084 AND WHEN I WILL GO BACK TO MY <UNK> VOTERS 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100085, best cost 138.924 + -2628.43 = -2489.51 over 998 frames.
+10100085 A I <UNK> GIVING A LOT OF THEM AND I SEE WHAT THAT I <UNK> TIME 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100086, best cost 220.96 + -2664.87 = -2443.91 over 998 frames.
+10100086 SHE THEN THE BALTIMORE WRITER A BLOCK AWAY FROM THE SAYS THE HUSBAND WAS A PERFECT THE SINGLE MOTHER HAD A VIOLENT HAVE PROBLEMS 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100087, best cost 170.952 + -2606.31 = -2435.36 over 998 frames.
+10100087 ONE WITH AN EYE WITH A SCENE BUT A HART WHO KNOW PATENT HAVE TO WIN A BLOW TO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100088, best cost 200.718 + -2656.98 = -2456.26 over 998 frames.
+10100088 FEEDLOTS <UNK> BY FOR LOGO IS <UNK> TO BOTTOM AND MUCH LESS A LAUGH AND THE <UNK> BACK UP A FALLON <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100089, best cost 199.175 + -2643.19 = -2444.02 over 998 frames.
+10100089 THOSE IN MY HEAD WITH I FEEL OF A PORTION OF THOUGHT THAT I THOUGHT OF HAVING HIM OF MY <UNK> WHARF IS <UNK> MOST 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100090, best cost 134.972 + -2711.31 = -2576.34 over 998 frames.
+10100090 LITTLE THOUGHT WAS TO HAVE TO KNOW I DON'T LIKE WHILE I DON'T LIKE THE COMPANY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100091, best cost 169.061 + -2679.44 = -2510.38 over 998 frames.
+10100091 ONE OF THE O. THE EYE AND MY HAIR LAW AND <UNK> FLEET WILL I DON'T WANT TO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100092, best cost 236.544 + -2698.7 = -2462.16 over 998 frames.
+10100092 I DID FIVE IT MIGHT HAVE WOULDN'T IS GOING OUT TO POP OUT LIKE A ON MY <UNK> NEVADA FOOD WHAT I WILL NOT HUGH M. I. 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100093, best cost 223.884 + -2580.66 = -2356.77 over 998 frames.
+10100093 OWEN HAVE MY <UNK> WITH IT AND HAD MOUTH THE INMATE IT WOULD LOOK I BECOME SO <UNK> R. I. WHICH I LIKE TO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100094, best cost 108.741 + -2661.87 = -2553.13 over 998 frames.
+10100094 I <UNK> MY YOUTH AT <UNK> LOW <UNK> REAL FLU 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100095, best cost 144.706 + -2648.74 = -2504.03 over 998 frames.
+10100095 WHEN I THOUGHT IT HAD ABOUT THE ACTIVITIES AS <UNK> FOR IDEAS <UNK> BE A MEMBER 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100096, best cost 165.749 + -2686.4 = -2520.66 over 998 frames.
+10100096 <UNK> AND IF I THINK I WAS A WING I <UNK> MYSELF I WANT TO GET BACK TO MY HEAD I WANT TO GO BACK 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100097, best cost 99.0002 + -2706.14 = -2607.14 over 998 frames.
+10100097 IF MARKETS BUT AND IT WILL BATTLE TO MY <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100098, best cost 192.595 + -2676.33 = -2483.74 over 998 frames.
+10100098 I <UNK> I WANT MY <UNK> ALLOW EYES <UNK> IN THE HOT WELL I THOUGHT I MIGHT DIE <UNK> AND ONE EIGHTH TO FAITH 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100099, best cost 129.949 + -2639.41 = -2509.46 over 998 frames.
+10100099 <UNK> HAS ITS OWN IN LENGTH AND A HOUSE IN A <UNK> GUY I <UNK> YOU KNOW 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100100, best cost 106.584 + -2776.68 = -2670.09 over 998 frames.
+10100100 I'M OF THE HIGH <UNK> LIE WITH AN ILL <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100101, best cost 184.627 + -2738.66 = -2554.04 over 998 frames.
+10100101 I <UNK> MUSCLE PLAYER MY <UNK> COLORS OF TEN WHO OF BAR <UNK> KNOWN <UNK> THOUGH I <UNK> HIM 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100102, best cost 201.058 + -2717.4 = -2516.34 over 998 frames.
+10100102 I <UNK> NINE TIMES <UNK> HIM AND THAT <UNK> GOING TO WHAT MY LIFE IS LIKE DEATH HUMAN WHOLE THING MY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100103, best cost 104.647 + -2769.82 = -2665.17 over 998 frames.
+10100103 UNTIL THEN WHEN <UNK> <UNK> IS SO HAVE FAITH 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100104, best cost 163.56 + -2776.88 = -2613.32 over 998 frames.
+10100104 IS THAT THE TRANSFER OF MY MOUTH FUND TRANSFER I'VE BEEN FILLING OTHER THE SAME 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10100105, best cost 191.951 + -2747.73 = -2555.78 over 998 frames.
+10100105 IN MIND BEFORE YOU HAVE TO FILL IN THIN BUT NO ONE IS THE <UNK> FAILURE LED TO FILL WHEN WE WILL SURVIVE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10330001, best cost 198.575 + -2769.85 = -2571.28 over 998 frames.
+10330001 <UNK> CHICAGO LITTLE LIKE A RETIRED FIGHT FOR A AFTER THIRTY YEAR TO NOTICE THAT THERE WAS SOMETHING BOTHER ME 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10330002, best cost 284.274 + -2851.82 = -2567.54 over 998 frames.
+10330002 ON THE <UNK> MY TONGUE TO ALL <UNK> IN PRE GROWTH TO WHAT EVERYONE <UNK> HAD THAT LITTLE GIRL TO HIT MAKE HE THE <UNK> COULD TAKE ALL DISSOLVED DEBATE MOVES 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10330003, best cost 201.436 + -2801.12 = -2599.69 over 998 frames.
+10330003 THE PAINTING THAT I HATE TO WAS <UNK> TO SO WHEN HE'S A CANCER HEART TO THE EARTH PEOPLE TO HEAD UP <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10330004, best cost 212.9 + -2843.64 = -2630.74 over 998 frames.
+10330004 <UNK> SWAN MICHEL <UNK> IN ALL MY BODY WITH CALLED IT MIGHT TAKE CARE OF THE THIRD THE FIFTY SOME <UNK> PERCENT THAT 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10330005, best cost 186.405 + -2816.03 = -2629.62 over 998 frames.
+10330005 IT WOULD THAT BUT IT MIGHT TAKE CARE OF IT THEN IT WAS UP INTO YOUR HIGH NIGHT THAT ARE NO GREATER 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10330006, best cost 260.087 + -2880.43 = -2620.34 over 998 frames.
+10330006 AND A CHOICE TRICKLE TO A DIFFERENT HOSPITAL I <UNK> WITH SOMETHING JUST DIDN'T FEEL RIGHT <UNK> AND DOCTOR <UNK> MARKED WITH HE STARTED TALKING TO B. A. I. U. D. 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10330007, best cost 232.375 + -2847.66 = -2615.28 over 998 frames.
+10330007 HE MAY BE FILLED STILL COMPARABLE IT SOLD <UNK> HE GOT IT REALLY CALM IT ALWAYS READY FOR ALL OF SOME LEGAL THE HOLY <UNK> IT 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10330008, best cost 238.178 + -2906.82 = -2668.64 over 998 frames.
+10330008 I'VE THE DISH CARE DO WITH THEIR AT EVERY <UNK> AND <UNK> ALMOST EVERY HOUR OF YONKERS CHECKING UP AND <UNK> <UNK> I THOUGHT THAT WITH NINE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10330009, best cost 219.429 + -2752.32 = -2532.89 over 998 frames.
+10330009 AND I <UNK> IT IS THE FEE THAT IT AT LEAST OUT OF TWO <UNK> AND <UNK> HERE FIVE NOT LIKE FACT THAT IN ADDITION TO PEOPLE THAT <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10330010, best cost 263.475 + -2806 = -2542.52 over 998 frames.
+10330010 SO THE CLOTH AND FIVE I FEEL MORE IT HARD TO TELL ME ON THAT WHEN I WITH THAT ALL MY MOTHER WITH AND THAT IF A WHILE YOU THAT HE WOULDN'T WITHDRAW 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10330011, best cost 150.168 + -2497.02 = -2346.85 over 848 frames.
+10330011 A PAINTER ARE A LOT OF SOMETHING TOTALLY GIVEN HIS FOR THE CHANGE OR HER LIFE I <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340001, best cost 55.3002 + -2883.42 = -2828.12 over 998 frames.
+10340001 I WAS DIAGNOSED WITH US 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340002, best cost 261.299 + -2977.43 = -2716.13 over 998 frames.
+10340002 SCHOOL MISSILE CARSON ALLOTMENT OF INTERIOR TONGUE ON BANK IN MARCH THOUSAND SIXTEEN ROUGHLY TWO YEARS AGO AT THE AGE OF TWENTY SIX ON UNNOTICED 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340003, best cost 296.836 + -3053.84 = -2757 over 998 frames.
+10340003 A SMALL BUMP ON MY TONGUE ONE MORNING I'M EARLY IN JANUARY OF THE NEW YEAR UNLIKE LESS VERY STRANGE FORMICA A TANKER STORES ON THINGS WITH LARGE SIDING 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340004, best cost 267.847 + -3023.41 = -2755.56 over 998 frames.
+10340004 I <UNK> I WAITED FOR TO GO AWAY AND DIDN'T OCCUR THEN BUY I. IS LATE JANUARY IT AND THE MONTH HIDE WHEN TO SEE A DOCTOR WHO FOR MEETING IN <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340005, best cost 243.845 + -3018.75 = -2774.9 over 998 frames.
+10340005 IF I'M BEING T.'S WILL GIVE ME AND SAID NO LESS FOR A STRANGE ON HAND DOWN ASKED IS UNTESTED TO SWALLOW OF IT ON 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340006, best cost 283.404 + -3011.22 = -2727.82 over 998 frames.
+10340006 I SAID THIS MIGHT BE SENSITIVE FLIGHT INFECTION CALM SO HE GAVE ME IF I THINK AMONG TO SELL IN HAND ANOTHER AUTUMN CREAM TO PUT ON IT DOESN'T HELP 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340007, best cost 280.744 + -2993.07 = -2712.33 over 998 frames.
+10340007 CHAIRMAN INFECTION HARM THAT DIDN'T PROVE TOO TOUGH <UNK> A LIFE SAVINGS OF MOVIES AND OF RAGE AND <UNK> AND TO ME SOME ALAS FROM ANTI THE COVER 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340008, best cost 282.328 + -3084.56 = -2802.23 over 998 frames.
+10340008 THAT AREA TO PRINT BREAKS THE TONE AUTUMN AFTER THE TWO WEEKS THAT DIDN'T GO AWAY AND IS LIKE WELL THERE'S NO WAY TO THE CANCER BECAUSE YOU'RE TWENTY SIX YEAR EIGHTY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340009, best cost 329.804 + -3041.64 = -2711.84 over 998 frames.
+10340009 NON SMOKER HE BARELY DRINK AND EVEN ARE GETS ALL HONG BUT LET'S DO BUY UP TO A WAY TO FIND WHAT IT IS SO INTO DEBT AND A WEEK LATER I KEPT PHONE CALL ON THE WAY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340010, best cost 211.069 + -2907.96 = -2696.89 over 998 frames.
+10340010 IN THE WORK I <UNK> HE ASKED ME I <UNK> FROM THE OFFICE DATA SPEAKING ABOUT THE LAW FIRM ABOUT THE POUND BY MOST 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340011, best cost 267.026 + -2978.5 = -2711.48 over 998 frames.
+10340011 OF THE DIAGNOSIS AND I SAID NO AS WINTER FRANKEL THEY WILL HOW ARE YOU DOING WELL IF YOU TELL MY <UNK> AND THE DUNES <UNK> SENT WELL I 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340012, best cost 187.252 + -2956.13 = -2768.88 over 998 frames.
+10340012 IN ITS UP APPEARS <UNK> TOM THAT YOU HAVE LONG OF <UNK> <UNK> ON THE TYPES OF CANCER EYE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340013, best cost 211.537 + -2982.71 = -2771.17 over 998 frames.
+10340013 I AND THAT WAS I FOUND OUT IF I MEMBER ARE JUST GETTING INCREASINGLY WORRIED OVER TIME WRIGHT HOW NEW COMPANIES 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340014, best cost 275.883 + -3025.61 = -2749.72 over 998 frames.
+10340014 AND SMALL HAVE KNOCKED C. UNIT AGO THAT ASSIST IT UP TO A DISINTEGRATION WAS LAX IN A BILL WAY RIGHT AND AS TIME PASSED AND EACH <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340015, best cost 247.844 + -3092.11 = -2844.26 over 998 frames.
+10340015 DRESSER MOVE TREATMENT DIDN'T TAKE TERROR ALONG OF THE ISSUE AND GETTING MORE LIKELY THAT THIS MIGHT ACTUALLY BE A TUMOR PALM DESPITE THE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340016, best cost 262.051 + -3053.7 = -2791.65 over 998 frames.
+10340016 WORRY IN THE FEAR <UNK> BUILT UP A BOMB AND LEAVE WHAT IT ACTUALLY IS IN AND THERE'S NO IS A MORE FEAR ABOUT THE ONE ITS FEAR ABOUT WHAT WOULD IT 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340017, best cost 263.469 + -3026.63 = -2763.16 over 998 frames.
+10340017 PRIOR THE DIAGNOSIS I. TO PUT MOST OF MYSELF I AM FOR MY BOSS GO BEFORE THE BUY OUT SEE THAT THE EFFORT AIR TO JUST BECAUSE THEY THINK THE WAY <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340018, best cost 278.093 + -2902.87 = -2624.78 over 998 frames.
+10340018 IN PART THE TONGUE AND IT WILL BE PAINFUL SPEAK THE NEXT DAY AT A <UNK> OF THE OFFICE WRIGHT AND THEN OF THE PEOPLE WOULD KNOW THEY NOTICE AUTUMN THUS MEMBER 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340019, best cost 265.706 + -3108.19 = -2842.48 over 998 frames.
+10340019 AS A FULL GULF MY BROTHER I <UNK> IT'S THE ONE WEEK BEFORE THE BUY OUT C. IS TALKING ABOUT WHATEVER IN GENERAL IT HAD INTO AN ALCOA SAID A U. P. I. 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340020, best cost 300.842 + -3056.62 = -2755.78 over 998 frames.
+10340020 THAT LIFTED AGENDA SWEET DEAL ECHO IN A DATE WHATEVER EVER GET WHAT WE THOUGHT ABOUT THE END I <UNK> I WAS JUST LIKE HIM BY THE WAY JUST BRENNAN THING AUTUMN 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340021, best cost 270.597 + -2946.34 = -2675.74 over 998 frames.
+10340021 I ACTUALLY SOLVE ALL OF MY TONGUE OFF ABOUT A MONTH AFTER ALL AS IN AWAY SOME OF THE BUY OUT C. I. BUT ON THIS WEEK THIS WAS THE LUCKY ENOUGH COULD BE CANCER 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340022, best cost 285.773 + -3099.58 = -2813.81 over 998 frames.
+10340022 I DON'T THINK IT IS JUST DIDN'T HAVE HEALTHY I AM BUT THE MIGHTY AND HIS REACTION WAS THAT LIKE THE OLD IS NO WAY TO BEAT BECAUSE OF THE OF CANCER THEN THE REST OF US ROLE WELL SERVED 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340023, best cost 289.462 + -3083.67 = -2794.21 over 998 frames.
+10340023 I <UNK> AS <UNK> FIELD PART FROM THIS ONE DIAGNOSIS I'M OFF A VERY HEALTHY INDIVIDUAL RIGHT NOT DRINKING AND SMOKING M. LIGHTLY DRINKING NON SMOKING LAW 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340024, best cost 196.291 + -2897.54 = -2701.25 over 998 frames.
+10340024 SOME EVEN ON THE OLD <UNK> AND <UNK> EVERYTHING TRADING WRIGHT AUTUMN THAT HE IS AGAIN IS NO WAY I <UNK> I <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340025, best cost 149.263 + -2870.89 = -2721.63 over 998 frames.
+10340025 IT SORT OF STAIRS <UNK> MAKE SENSE IT'S NATURAL CALM TO DO WITH IT <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340026, best cost 228.237 + -2996.42 = -2768.18 over 998 frames.
+10340026 HERS IS DESTINED TO WRITE A COLUMN I DID FIND IT A COM CONVICTION THAT AS I <UNK> APPROACH SURGERY ACTION CAME LESS 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340027, best cost 250.086 + -3058.88 = -2808.8 over 998 frames.
+10340027 UNLESS SCARED PALM AS I TEND BEGAN TO ACCEPT THAT THIS IS THE WAY THINGS ARE ON FINANCING BERG TO DOCTOR HAVE GONE THURSDAY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340028, best cost 243.314 + -3009.77 = -2766.45 over 998 frames.
+10340028 NOTHING I CAN DO JUST WISH AND SO I JUST IN TO RELAX AND LET THE DOCTORS TO THE WORK ALONE BECAUSE IF YOU KNOW YOU DON'T HAVE ENOUGH 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340029, best cost 172.984 + -2906.48 = -2733.49 over 998 frames.
+10340029 COMMERCIAL ENERGY DIDN'T WORRY ABOUT IT SAYS ABOUT IT DOES NOT SO HE CAN EVEN MATCH I. I WAS 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340030, best cost 289.806 + -3127.39 = -2837.58 over 998 frames.
+10340030 FORTUNE UP TO ONLY NEED GOT A SINGLE SURGERY SO I HAD A UP ARTICLE SUCH TO ME I'M PROVING ABOUT A FIFTH OF THE FORM IS FORBIDDEN 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340031, best cost 260.123 + -2902.93 = -2642.8 over 998 frames.
+10340031 I'M ON AND AND HAD <UNK> SLICK NECK THE SECTION ON THE LEFT SIDE TWO OF ITS AWESOME LIST SUCH MCPHERSON HAVING SURGERY <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340032, best cost 268.997 + -2907.75 = -2638.75 over 998 frames.
+10340032 I <UNK> MY ALONG I GET VERY SIGNIFICANT ONE FOR HER FIRST <UNK> WRITING GUILTY OF A COUNCIL SEVEN YEAR TO IT AND CATHOLIC OF A WARM UP AROUND MY <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340033, best cost 263.495 + -3083.13 = -2819.63 over 998 frames.
+10340033 I <UNK> IT WAS ALL DONE IN A SINGLE PROCEDURE LAST COUPLE HOURS HAHN I WAS IN AMOUNT I THINK TWENTY THREE IN HALF HOURS THEY I.'S MAY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340034, best cost 254.333 + -2987.02 = -2732.69 over 998 frames.
+10340034 HER I. I FELT VERY TO COME BEFORE AND GOING AND I DO NOT EXPECT A PARENT'S WITH ME WHICH WAS A GREAT RELIEF COULD HELP CALM 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340035, best cost 329.58 + -3141.4 = -2811.82 over 998 frames.
+10340035 NOT EVEN LIKE <UNK> WITH ME THINKING LIKE WILL MAY BE THE FUEL ALL RIGHT AFTERWARDS AND I'M SITTING THERE LANG MAY BE ALL THE OLD THE PUTS AND HIS OUT CUTS TOGETHER AND DO SOMETHING 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340036, best cost 234.506 + -2980.38 = -2745.88 over 998 frames.
+10340036 LITTLE THE PRODUCTIVE YET LITTLE OR NO THAT HAS NOT HAPPENED NO I <UNK> I REMEMBER MY BEFORE SURGERY HUM IF THEY'D 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340037, best cost 246.473 + -3100.89 = -2854.42 over 998 frames.
+10340037 AGAIN WITH SOME OF THE <UNK> AS THE CHEF GET WHEN IT WAS SHORTLY BEFORE PULLING OUT HAHN I'M ARE PASSING FOR THE WHOLE WAYS ON THEM 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340038, best cost 313.38 + -3173.67 = -2860.29 over 998 frames.
+10340038 ON THE JOURNEY N. AND COMING IN TO SURGE OR ROOM NOT LEAVING SEE MUCH APART FROM <UNK> MILL ITS DIRECTLY IN FRONT OF ME AND I ABOUT NEAR THE TABLE MONITORS A CUT OF <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340039, best cost 317.236 + -3068.19 = -2750.95 over 998 frames.
+10340039 PALO KONG LAW ON THE TABLE WAS AMOUNT ONLY SAID ARE UP TO IS SOLE UP ON THE TABLE AND I WAS ALREADY VERY WHOSE <UNK> AT THIS POINT AND I WERE IN A BIGGER GUY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340040, best cost 288.722 + -2902.65 = -2613.93 over 998 frames.
+10340040 IT OUT BUT LIKE THIS FOR DUTY YEAR LIKE HUGO MERELY TO THINKING AND I <UNK> IN THE PALO AND REAGAN BEGAN THE SINS OF <UNK> GRIN BEGIN AND PUT THE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340041, best cost 211.369 + -2932.21 = -2720.84 over 998 frames.
+10340041 MASCO FOR MY FACE OF SUCH OUT I <UNK> IS OUT AND I WILL GO UP IF I'M <UNK> HOURS LATER IF I'M DECEMBER 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340042, best cost 194.792 + -2961 = -2766.21 over 998 frames.
+10340042 KNOWING WRINGING I'M LOT OF PAIN TOUGH COMPETITIVE IN AND OUT OF THE DEAD UNTIL THE NEXT MORNING ON 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340043, best cost 330.961 + -3053.7 = -2722.74 over 998 frames.
+10340043 AS WHAT I WILL COVER THE WAITING ROOM THEY BROUGHT ME OF THE ROOM FOR THE NIGHT MAYBE <UNK> IS A SHAKY FROM <UNK> JOURNEY TO ACTUAL THAT BUY OUT A RIVER THAT ARE EVEN ON AND WASN'T UNTIL 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340044, best cost 236.798 + -3024.25 = -2787.45 over 998 frames.
+10340044 SOME TIME EIGHTY SEVEN IS OFTEN MORE <UNK> AT UP TO THE REST FROM THE FIRST TIME ON AN ARMED STRUGGLE LIKE HIM ACTUALLY GETTING UP AND GETTING ORDER 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340045, best cost 232.735 + -2957.93 = -2725.2 over 998 frames.
+10340045 STROM AND YOGURT I DON'T MYSELF <UNK> GIVES A SHOT AND HAVE DIFFICULT THAT I OFTEN GET WHEN YOU DO NOT EXPECT THAT 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340046, best cost 228.252 + -2947.32 = -2719.07 over 998 frames.
+10340046 IT IS VERY BOLD AS THEY <UNK> HAVE CHANGED SEE THE GODS OF SKIN THE IVY SO INITIALLY FROM I THINK WHAT OF THE PAIN <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340047, best cost 328.861 + -3061.93 = -2733.06 over 998 frames.
+10340047 I <UNK> WITH NO THAT THE ONLY WAS YES AQUINO NINE ON YOUR GET YOUR GENERAL <UNK> AND SCALE RIFE I THINK THE PAINTING ACTUALLY DONE WORSE BY TIME I LEFT JUST BECAUSE OF THE REDUCTION 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340048, best cost 268.681 + -3013.4 = -2744.72 over 998 frames.
+10340048 AN IN THE DRUG VOTE YEAH I ADDED THAT THE J. P. I. TREND RIGHT SO FOR LEE ON IT A SECTION PORTION ON THE <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340049, best cost 256.039 + -2922.66 = -2666.62 over 998 frames.
+10340049 <UNK> A. E. G. B. TRAINED WITH OF THE TWO FILM HAVE TO HEAR TOUGH I'M NOT A WAR THAT MY NECK THE NEXT FIVE OR SIX DAYS SMUGGLING I. 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340050, best cost 274.033 + -3110.36 = -2836.33 over 998 frames.
+10340050 <UNK> AND THE BIGGEST TWICE A DAY OR SO MAKING THE FLU THAT CAME OUT DOWN AFTER FEW DAYS LAW THE FLU WAS A CLEAR ENOUGH AND THE VOLUME THAT PRODUCE ENOUGH 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340051, best cost 256.526 + -3122.11 = -2865.58 over 998 frames.
+10340051 AS A <UNK> OUT SO MEMBER HOME GETTING AND CAUSE A MOM TRIM BACK UP THE HOPKINS BALTIMORE AND IOWA MEETING WITH LEE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340052, best cost 307.68 + -3005.37 = -2697.69 over 998 frames.
+10340052 NURSE I'M ON HAND HIS CAN ACTUALLY REMOVING IT WAS IN A MAJOR THINGS A TOUGH ONE TO AUGUST I <UNK> IT WAS THE OF THE OLD AS OF A MILE THE KNOW AS <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340053, best cost 260.483 + -2993.5 = -2733.02 over 998 frames.
+10340053 A BRIEF END OF THE UNEXPECTED SENSATION AS I CAME OUT CAN I WAS AMAZED A YOUTH THAT SUCH A LARGE LOANS <UNK> VALVE IN SUCH A SMALL HOLE I. 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340054, best cost 253.112 + -3078.4 = -2825.29 over 998 frames.
+10340054 BY EIGHT PAGES SMOOTH A TWO WEEK MARKED THE PAINTING HAND GUN ANNOUNCEMENT THINLY SO THAT THAT WAS FINE WITHIN SEVERAL DAYS I AM BUT 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340055, best cost 255.379 + -3136.71 = -2881.33 over 998 frames.
+10340055 THE ENERGY LEVELS AND THE ABILITY TO BE LIKE AWAIT YOU KNOW FOR MORE THAN TWELVE HOURS A DAY I JUST THAT TOOK SEVERAL WEEKS RECOVER IT WAS <UNK> DAMAGE ON 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340056, best cost 240.185 + -3065.7 = -2825.51 over 998 frames.
+10340056 BOTH WITH I <UNK> TO ME REDUCING ABILITY EAT AND TO GET THE NEW TREES HE TO RECOVER ONGPIN ALSO THIS SIZE OF 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340057, best cost 189.672 + -2884.84 = -2695.16 over 998 frames.
+10340057 CALM THE INCEPTION OF THE V. I. M. <UNK> A SESSION DISDAIN THE WHILE TO GET BETTER <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340058, best cost 241.889 + -3028.86 = -2786.97 over 998 frames.
+10340058 SIX TIME ON THE HAITIAN GO OFF A MEMBER BEING TENTATIVE SET AFTER SURGERY IN I. B. D. O. AND <UNK> ARE LIKE THE SEOUL 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340059, best cost 248.947 + -3102.66 = -2853.71 over 998 frames.
+10340059 TO ME AND HIM TO COME NOW I FELL SO MUCH WORSE THAN WHEN I WENT I. BECAUSE THE OTHER TUMOR DOESN'T ACTUALLY DO ANYTHING TO YOU JUST AS A WHOLE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340060, best cost 290.404 + -2993.86 = -2703.45 over 998 frames.
+10340060 ALL ONE PUT IT ON A DOZEN THE FAMILY IMPACT UNTIL ITS TEST SIZE AND GONE IS BRINGING ON EVERY TIME A CRITICAL STING ABOUT I. RIGHT BUT ITS MEMBERS 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340061, best cost 269.119 + -3034.65 = -2765.53 over 998 frames.
+10340061 IT BEFOREHAND THAT A VOCAL ACTUALLY FIND AN AFTER IT WAS JUST COULDN'T DO ANYTHING FOR FOR WEEKS ON THAT I'M BUT THAT DID IMPROVE SLOWLY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340062, best cost 220.303 + -3062.44 = -2842.14 over 998 frames.
+10340062 WE I THOUGHT ABOUT WHAT TENNECO POUNDS IN THE FIRST WEEK ASKED LEAST AFTER ABOUT A DAY OR SO AS OF THE DRINK SOME 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340063, best cost 244.875 + -2981.74 = -2736.87 over 998 frames.
+10340063 I'M SOME COOL ROTH A HIGH TEMPERATURE WITH AN AWFUL RIPE AT LEAST THAT COLD ARE THAT <UNK> THAT WORKED BUT I 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340064, best cost 285.443 + -3124.73 = -2839.29 over 998 frames.
+10340064 B. D. FOUR HIGHS AND DIE OF APPLE SAUCE <UNK> ARE OFF PAWN IN AND BUY A DAY SEVEN I WAS ON A DIET OF APPLE SAUCE <UNK> ROTH AND <UNK> CASE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340065, best cost 199.888 + -2957.97 = -2758.08 over 998 frames.
+10340065 I <UNK> MY <UNK> WAS MAYBE AFTER AGO TWO OR THREE WEEKS I COULD HAVE WON SOME SULFUR FOODS ON MY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340066, best cost 192.79 + -3014.62 = -2821.83 over 998 frames.
+10340066 THE BIG BEANS SALMON I'M VERY VERY TENDERED FOR CHICKEN THAT NO DIFFICULTY WITH TASTE BUT MY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340067, best cost 294.089 + -3039.19 = -2745.1 over 998 frames.
+10340067 TUNG WAS VERY KNOWN THE FIRST TWO WEEKS ON ANYONE TO DATE AS FUEL STRANGE I <UNK> EVERY TIME I SPEAK I CAN STILL TELL THAT THERE IS A <UNK> A VERY <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340068, best cost 249.221 + -3058.27 = -2809.05 over 998 frames.
+10340068 THEY ARE IN DALLAS FOR THE LEFT AND RIGHT SIDE ON WHY ROUTINELY <UNK> TUNG I. CAN HAVE ALL ALONG A LITTLE BIT LESS KNOWLEDGE FOR WHERE IT IS MY MOUTH 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340069, best cost 195.733 + -2997.04 = -2801.31 over 998 frames.
+10340069 I <UNK> IN A SURPRISING TO THAT IT MIGHT BUY THAT SO OFTEN BECAUSE THERE'S LESS THAT THEIR TO BUY I. BUT THE I. A. 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340070, best cost 298.062 + -3114.97 = -2816.91 over 998 frames.
+10340070 I DO BUT THE HOTTEST A MONTH'S BE TO FALL JUST FOR A COUPLE OF MEETINGS CALM AND SHE DIDN'T EASING EXERCISES ON TELECOM ABILITY USUALLY BECAUSE OF THE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340071, best cost 270.668 + -3032.69 = -2762.02 over 998 frames.
+10340071 THE RATHER SMALL AREA THAT WAS <UNK> PALM RESPECTED NOW I'LL HAVE MANY LONG TERM AND TEXAS BE SHRINKING I CAN UNSEAT ABOUT AS GOOD AS EAST 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340072, best cost 230.112 + -2967.45 = -2737.34 over 998 frames.
+10340072 ON AMOUNTS OF THOSE WHICH CAN TELL THE DIFFERENCE I. BUT THAT C. I <UNK> I <UNK> ALSO SEEN A FISCAL THEIR BEST THAT CAN AS A WHOLE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340073, best cost 213.504 + -2982.17 = -2768.67 over 998 frames.
+10340073 ON POST THIS IS AS A HAD TO DO THEIR PALM MOSTLY TO REGAIN THE NECK ABILITY BOMB AND THAT THE <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340074, best cost 230.008 + -3018.99 = -2788.98 over 998 frames.
+10340074 I'M NOT SURE YOUR REVEAL PERFECTLY <UNK> WILL AGAIN FROM THOSE THINGS WITH LIKE THIS IS THE A RATHER LARGE AN UNEXPECTED CHANGE I AM 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340075, best cost 232.45 + -2986.1 = -2753.65 over 998 frames.
+10340075 AND THEN IT UP HE CHANGES ARE ALL THE <UNK> FROM THERE ON WRITING OFF THIS THE THINGS HE VALUE AND WHAT YOU CARE ABOUT 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340076, best cost 265.159 + -3102.47 = -2837.31 over 998 frames.
+10340076 AND WHAT YOU I <UNK> AND WE NO LONGER TELERATE COULD AND A KIND OF NONSENSE YOU WILL EACH TIME ON ONCE YOU'VE GONE COME SO CLOSE TO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340077, best cost 234.767 + -3040.35 = -2805.59 over 998 frames.
+10340077 LOSING EVERYTHING HIM SO IN THE CURRENT CYCLE ACTUALLY EMOTIONALLY PERSONALLY I'M NOT SURE THAT YOU EVER GET BACK TO WHAT WAS NORMAL I. 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340078, best cost 216.737 + -2938.8 = -2722.06 over 998 frames.
+10340078 M. I. BUT PRETTY SOON BE TEN OF THE LIKE THIS IS A LAMB NOW AN EQUAL TO A FAT ON PHYSICALLY HIM 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340079, best cost 200.173 + -3011.56 = -2811.39 over 998 frames.
+10340079 IT WAS A FEW MONTHS I AM I STILL HAVE PLENTY OF RE OF THE TWO AFTER SURGERY OF ABSOLUTELY CRITICAL YEAH I WOULD HAVE NO 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340080, best cost 245.521 + -3028.71 = -2783.19 over 998 frames.
+10340080 <UNK> MYSELF THE FIRST TWO WEEKS AFTER SURGERY ON I'M APPEARANCE OF ME I'M ONE OF THEM HAD EVERY EVERY POINT IN TIME <UNK> PEOPLE STOP 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340081, best cost 255.833 + -2976.11 = -2720.28 over 998 frames.
+10340081 ON LUCKY ENOUGH TO LIVE ON STILL NEW <UNK> NEARBY WHERE GROWTH SO AUTUMN AND AT PARENTS YOU WOULDN'T AIR AND WOULD BE THE <UNK> THING 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340082, best cost 201.499 + -3034.13 = -2832.64 over 998 frames.
+10340082 WE'RE IN A VERY WARY YEAH I CAN'T EVERY TIME I <UNK> THIS KIND OF LAW ON ALL OR NOTHING MAKE IT A GREAT EVENT 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340083, best cost 305.351 + -3134.3 = -2828.95 over 998 frames.
+10340083 WRITE THIS COULD BE THE TIME I FIND OUT THAT A WIDELY ACTUALLY DO FOR CANCER AGAIN RIGHT ON HIM NEARLY THEY TAKE YOUR WEIGHT AND YOUR BLOOD PRESSURE AND A TEMPERATURE OF A TINY COMMENT 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340084, best cost 286.245 + -3035.02 = -2748.78 over 998 frames.
+10340084 THE <UNK> THE HOSPITAL WRIGHT AND MY BLOOD PRESSURE IS ROUTINELY LIKE THIRTY POINTS OF KIDDER HAD <UNK> BE DONE BEFORE ECOLOGY APPOINTMENT AND IT IS AN AGGRESSIVE REGULAR DOCTOR 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340085, best cost 227.511 + -2997.18 = -2769.67 over 998 frames.
+10340085 I'M BUT LIKELY THAT IT DIDN'T DIDN'T COME BACK HOME IT'S BEEN TWO YEARS NOW HAWK UP THE LAST LAST CHECK 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340086, best cost 327.504 + -3107.99 = -2780.49 over 998 frames.
+10340086 UP THE TWO YEAR ONE ON <UNK> WITH THAT IN A BENCHMARK WAS <UNK> TO CLEANER VIKING AUTUMN BY DO FEEL LIKE FROM NOW ON WILL BE JUST MORE THAN YOU ACTUALLY ROUTINE PRIDE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340087, best cost 291.768 + -3152.98 = -2861.21 over 998 frames.
+10340087 A MORE LIKE THIS IS JUST A PART OF MY <UNK> BY ANNUAL OR ANNUAL MAINTENANCE CALM IT'S REALLY NOT QUICKLY TO MOUNT ANYTHING I JUST DID THIS TO MAKE TRUST A HEALTHY 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340088, best cost 254.613 + -3072.04 = -2817.43 over 998 frames.
+10340088 I WAS BEFORE THIS IS NO IT WAS MORE TO MAKE SURE THE AND HEALTHY I DON'T ACTUALLY I <UNK> ALL CURRENTLY HAVE CANCER AND HE STILL HADN'T COME 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340089, best cost 188.583 + -2932.26 = -2743.67 over 998 frames.
+10340089 ACTON RELIANCE BRILLIANT NO GOOD TIME TO GET A DIAGNOSIS LIKE THIS RIGHT BUT THIS IS PROBABLY THE <UNK> 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340090, best cost 286.35 + -3137.83 = -2851.48 over 998 frames.
+10340090 ASKED POSSIBLE TIME TO EVERY DEBT ONE BUT THEN THINKING ABOUT THE TRUTH IS AVAILABLE NOW HOME AS OPPOSED TO EVEN DECADES AGO THAT THERE ARE THERE OR TREATMENTS 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340091, best cost 279.008 + -3103 = -2823.99 over 998 frames.
+10340091 I THOUSANDS YEARS AGO NOTHING PUNCHES AGO NOTHING COULDN'T DECADES AGO THE WORK IT REALLY NEED VIABLE HOME TREATMENTS THAT HAD A HIGH SUCCESS RATE 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340092, best cost 230.987 + -3054.1 = -2823.11 over 998 frames.
+10340092 WITH NO MINIMAL OR LOW COMPETITIONS AUTUMN WAS NOW THERE ARE THERE ARE A GOOD US THAT THE STICK WITH WHATEVER DOCTORS 
+LOG (lattice-scale[5.5.543~1-7249c]:main():lattice-scale.cc:107) Done 209 lattices.
+LOG (lattice-add-penalty[5.5.543~1-7249c]:main():lattice-add-penalty.cc:62) Done adding word insertion penalty to 209 lattices.
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:99) For utterance 10340093, best cost 264.467 + -2867.35 = -2602.88 over 978 frames.
+10340093 RICHMOND BUT THE NERVOUS WILL THERE BE HUNG DOCTORS ORDER THAT OF A BRITISH NURSE TO BE TREES FALL THE ADVICE ON <UNK> RECOVERY WAS FURTHER 
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:124) Overall cost per frame is -2.64475 = 0.208578 [graph] + -2.85333 [acoustic] over 208412 frames.
+LOG (lattice-best-path[5.5.543~1-7249c]:main():lattice-best-path.cc:128) Done 209 lattices, failed for 0
+# Accounting: time=5 threads=1
+# Ended (code 0) at Fri Aug 28 13:22:04 CEST 2020, elapsed time 5 seconds
