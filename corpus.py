@@ -10,15 +10,14 @@ from typing import List, Tuple
 from utils import HParam
 import re
 
-class AlternativeCMUDict():
 
+class AlternativeCMUDict():
 
     def __init__(self, location: str):
         """
         Basically an alternative CMUDict parset because the original one is most likely an overkill
         """
         # Create dict
-
 
         with open(location, encoding='latin-1') as file:
             cmu_dict = {}
@@ -28,8 +27,6 @@ class AlternativeCMUDict():
 
         self.cmudict = cmu_dict
         print("")
-
-
 
     def get_arpabet(self,text):
         """
@@ -68,12 +65,12 @@ class WERDetails:
 
 
         # Converter table formatting
-        self.converter_table = pd.read_csv(os.path.join(current_dir,"PhoneSet_modified.csv"))
-        self.converter_table = self.converter_table[self.converter_table['ARPAbet'].notna()]
+        self.converter_table = pd.read_csv(os.path.join(current_dir,self.config.phoneme.conversion_mapping))
+        self.converter_table = self.converter_table[self.converter_table[self.config.phoneme.phoneme_name].notna()]
         self.converter_table = self.converter_table.fillna(0)
 
-        # We consistently need to use uppercase throughout the code
-        self.converter_table = self.converter_table.set_index(self.converter_table["ARPAbet"].str.upper())
+        # We consistently nee
+        self.converter_table = self.converter_table.set_index(self.converter_table[self.config.phoneme.phoneme_name])
         if not skip_calculation:
             self.all_ref_phonemes, self.all_hyp_phonemes, self.manipulations = self.phoneme_alignment()
 
@@ -117,7 +114,7 @@ class WERDetails:
         for phoneme in missing_phonemes:
             all_ref_phonemes.append(phoneme)
             all_hyp_phonemes.append(phoneme)
-            all_manipulations.append("c")
+            all_manipulations.append("e") # e is correct
 
         # Sanity check to make sure that the set of reference phonemes is the same as the set of hyp phonemes
         assert set(all_ref_phonemes) == set(all_hyp_phonemes)
@@ -192,7 +189,7 @@ class WERDetails:
         Calculate Manner of Articulation Articulatory Feature Error Rate
         :return:
         """
-        moas = ["Vowel","Plosive","Nasal","Fricative","Affricates","Approximant"]
+        moas = self.config.phoneme.moa
         return moas, [self.afer_per_phoneme(self.moa_to_phonemes(moa)) for moa in moas]
 
     def all_poa_afers(self) -> Tuple[list, List[float]]:
@@ -200,7 +197,7 @@ class WERDetails:
         Calculate Place of Articulation Articulatory Feature Error Rate
         :return:
         """
-        poas = ["Vowel","Bilabial","Labiodental","Dental","Alveolar","Postalveolar","Palatal","Velar","Glottal"]
+        poas = self.config.phoneme.poa
         return poas, [self.afer_per_phoneme(self.poa_to_phonemes(poa)) for poa in poas]
 
     def load_sentences(self) -> Tuple[list,list]:
@@ -264,29 +261,42 @@ class WERDetails:
         return "{" in decoded
 
     def phoneme_to_poa(self, phoneme: str) -> str:
-        assert phoneme.upper() == phoneme
+        #assert phoneme.upper() == phoneme
         # Edge case for handling insertion/deletion errors
-        if phoneme == " ":
+        # TODO: This will need a more elaborate exception list implemented
+        if (phoneme == " ") | (phoneme == "[SPN]"):
             return phoneme
 
-        poas = ["Vowel","Bilabial","Labiodental","Dental","Alveolar","Postalveolar","Palatal","Velar","Glottal"]
-        poa_filter = self.converter_table.loc[phoneme, poas]
-        # If there are multiple, we return the first one
-        poa = poa_filter.index[poa_filter == 1].values[0]
-        return poa
+        poas = self.config.phoneme.poa
+
+        # The gist of the problem seems to be that Pandas indexing is very slow
+        # So this is an ugly numpy based solution for getting the moa, enjoy
+        converter_table_idx = self.converter_table.index.values
+        converter_table_cols = self.converter_table.columns.values
+        idx = np.where(phoneme == converter_table_idx)
+        cols = np.array([np.where(poa == converter_table_cols) for poa in poas])[:,0,0]
+        poa_idx = np.argmax(self.converter_table.values[idx,cols][0,:])
+
+        return poas[poa_idx]
 
     def phoneme_to_moa(self, phoneme: str) -> str:
 
-        assert phoneme.upper() == phoneme
+        #assert phoneme.upper() == phoneme
         # Edge case for handling insertion/deletion errors
-        if phoneme == " ":
+        # TODO: This will also need an exception list
+        if (phoneme == " ") | (phoneme == "[SPN]"):
             return phoneme
-        moas = ["Vowel","Plosive","Nasal","Fricative","Affricates","Approximant"]
-        moa_filter = self.converter_table.loc[phoneme, moas]
-        # If there are multiple, we return the first one
-        moa = moa_filter.index[moa_filter == 1].values[0]
+        moas = self.config.phoneme.moa
 
-        return moa
+        # The gist of the problem seems to be that Pandas indexing is very slow
+        # So this is an ugly numpy based solution for getting the moa, enjoy
+        converter_table_idx = self.converter_table.index.values
+        converter_table_cols = self.converter_table.columns.values
+        idx = np.where(phoneme == converter_table_idx)
+        cols = np.array([np.where(moa == converter_table_cols) for moa in moas])[:,0,0]
+        moa_idx = np.argmax(self.converter_table.values[idx,cols][0,:])
+
+        return moas[moa_idx]
 
     def poa_to_phonemes(self, poa: str) -> list:
         """
@@ -295,11 +305,13 @@ class WERDetails:
         :param poa:
         :return:
         """
-        assert poa in ["Vowel","Bilabial","Labiodental","Dental","Alveolar","Postalveolar","Palatal","Velar","Glottal"]
+        assert poa in self.config.phoneme.poa
 
         poa_filter = self.converter_table.loc[:, poa]
         poas = poa_filter.index[poa_filter == 1].values
 
+        if len(poas) == 0:
+            raise Exception("The articulatory feature ", poa, "doesn't have a corresponding phoneme in your PhoneSet")
         return poas
 
     def moa_to_phonemes(self, moa: str) -> list:
@@ -308,8 +320,7 @@ class WERDetails:
         :param moa:
         :return:
         """
-        assert moa in ["Vowel","Plosive","Nasal","Fricative","Affricates","Approximant"]
-
+        assert moa in self.config.phoneme.moa
         moa_filter = self.converter_table.loc[:, moa]
         moas = moa_filter.index[moa_filter == 1].values
         return moas

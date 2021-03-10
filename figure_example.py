@@ -1,4 +1,4 @@
-
+import time
 from corpus import WERDetails
 from utils import HParam
 #partition = "test"
@@ -13,12 +13,16 @@ if preprocessing:
     wer_details = WERDetails("experiments/jasmin_example/scoring_kaldi/wer_details/per_utt", skip_calculation=False,
                              config=config)
 
-    phoneme, other = wer_details.all_pers()
+    #phoneme, other = wer_details.all_poa_afers()
 
-    print(len(phoneme))
-    print(len(other))
-    df = pd.DataFrame(data=other, index=phoneme)
-    #df = pd.DataFrame(data=np.vstack((phoneme,other)))
-    print(df)
-    #print(phoneme)
-    #print(other)
+    t = time.time()
+    moa_mat = wer_details.moa_confusion_matrix()
+    s = time.time()
+    print(s-t, "secs")
+    poa_mat = wer_details.poa_confusion_matrix()
+    k = time.time()
+    print(k-s, "secs")
+    print(poa_mat)
+    print()
+
+    #df = pd.DataFrame(data=other, index=phoneme)

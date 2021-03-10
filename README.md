@@ -13,21 +13,20 @@ The WER and the PER is calculated based on the Levensteihn distance.
 
 ### Requirements
 - Use the conda environment.yml file provided
-- sklearn version 0.25 will deprecate labels argument
 
 ### Paper reproduction
 - Install the required packages for the framework
-- Create the conda environment from environment yml
+- Create your venv of your choice from the requirements.txt provided
+  - We use a function which will be deprecated in sklearn version 0.25, so please be mindful of that
+  
 - Run analysis.py
 
 ### Adaptation for your own datasets
 - Put your wer_details experiments in the same format as the other experiments, see example below
 - Adapt the config files with your feature conversions and your lexicon, or use the already provided conversion
   tables or lexicons. (Provided for English and Dutch so far)
-- There is an example provided below for PER extraction
-
-
-### Example
+  
+### Example for PER extraction
 
 ```python
     from corpus import WERDetails

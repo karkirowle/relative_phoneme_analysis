@@ -139,6 +139,8 @@ def align_sequences(r, h):
     """
     This is a function that calculate the word error rate in ASR.
     You can use it like this: wer("what is it".split(), "what is".split())
+
+    return: a list of manipulations having the same size (i insertion, d deletion, s substition, e correct)
     """
     # build the matrix
     d = edit_distance(r, h)
