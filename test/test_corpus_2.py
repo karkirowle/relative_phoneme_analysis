@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from corpus_2 import WERDetails
+from corpus import WERDetails
 
 
 class TestWERDetails(TestCase):

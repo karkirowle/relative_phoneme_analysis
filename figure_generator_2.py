@@ -4,8 +4,9 @@ import pandas as pd
 import matplotlib
 import os
 from typing import List
-from corpus_2 import WERDetails
+from corpus import WERDetails
 from scipy.stats import pearsonr
+
 # Sets to a nicer font type
 matplotlib.rcParams['mathtext.fontset'] = 'stix'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
@@ -348,12 +349,16 @@ def visualise_confusion_matrices(confusion_matrices: list, experiment_name_list:
     fig = plt.figure(num=None, figsize=(format_dict["width_fig"], format_dict["height_fig"]),
                      dpi=format_dict["dpi"], facecolor='w', edgecolor='k')
 
+    fig.patches.extend([plt.Rectangle((0.0, -0.03), 0.28, 0.9,
+                                      fill=True, color='g', alpha=0.5, zorder=-1000,
+                                      transform=fig.transFigure, figure=fig)])
+
     num_confusion_matrices = len(confusion_matrices)
 
     for i,confusion_matrix in enumerate(cm_list):
         plt.subplot(1,num_confusion_matrices,i+1)
 
-        im = plt.imshow(confusion_matrix,cmap="RdYlGn")
+        im = plt.imshow(confusion_matrix,cmap="PiYG")
         cbar = plt.colorbar(im, fraction=0.046, pad=0.04) # this is a Stack Overflow copy paste for the sidebar
         cbar.ax.tick_params(labelsize=6)
 
@@ -361,7 +366,9 @@ def visualise_confusion_matrices(confusion_matrices: list, experiment_name_list:
         if i == 0:
             plt.clim(-100, 100)
         else:
-            plt.clim(-30,30)
+            plt.clim(-10,10)
+
+
 
         # This is needed so the numbers are right aligned
         for t in cbar.ax.get_yticklabels():
@@ -403,6 +410,8 @@ def visualise_confusion_matrices(confusion_matrices: list, experiment_name_list:
         if i == 0:
             plt.xlabel("predicted")
             plt.ylabel("ground truth")
+            ax = plt.gca()
+            ax.patch.set_facecolor("#eafff5")
         if i == 4:
             plt.ylabel("% (relative) accuracy",fontsize=7,labelpad=27)
             ax = plt.gca()
@@ -412,8 +421,28 @@ def visualise_confusion_matrices(confusion_matrices: list, experiment_name_list:
     plt.subplots_adjust(wspace=0.40)
     fig.set_size_inches(format_dict["width_fig"], format_dict["height_fig"])
 
+    # Draw a horizontal lines at those coordinates
+    #if "moa" in filename:
+        #line = plt.Line2D((.283, .283), (-0.04, 0.8), color="k", linewidth=1, linestyle="--")
+        #plt.text(-34,11,"absolute",rotation="vertical",fontsize=7)
+        #plt.text(-33,11,"relative",rotation="vertical",fontsize=7)
+        #fig.add_artist(line)
+    #if "poa" in filename:
+        #line = plt.Line2D((.286, .286), (-0.04, 0.8), color="k", linewidth=1, linestyle="--")
+        #plt.text(-48.2, 16, "absolute", rotation="vertical", fontsize=7)
+        #plt.text(-46.6, 16, "relative", rotation="vertical", fontsize=7)
+        #fig.add_artist(line)
+
+
+
     current_dir = os.path.dirname(__file__)
     #plt.show()
-    plt.savefig(os.path.join(current_dir,"figures/" + filename + ".pdf"),bbox_inches='tight',pad_inches = 0.005)
+
+    fig = plt.gcf()
+    ax = plt.gca()
+    ax.set_facecolor("red")
+    #plt.show()
+    fig.savefig(os.path.join(current_dir,"figures/" + filename + ".pdf"),bbox_inches='tight',pad_inches = 0.005,
+                facecolor=fig.get_facecolor(), transparent=True)
 
     return 1

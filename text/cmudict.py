@@ -10,7 +10,9 @@ valid_symbols = [
   'EY0', 'EY1', 'EY2', 'F', 'G', 'HH', 'IH', 'IH0', 'IH1', 'IH2', 'IY', 'IY0', 'IY1',
   'IY2', 'JH', 'K', 'L', 'M', 'N', 'NG', 'OW', 'OW0', 'OW1', 'OW2', 'OY', 'OY0',
   'OY1', 'OY2', 'P', 'R', 'S', 'SH', 'T', 'TH', 'UH', 'UH0', 'UH1', 'UH2', 'UW',
-  'UW0', 'UW1', 'UW2', 'V', 'W', 'Y', 'Z', 'ZH'
+  'UW0', 'UW1', 'UW2', 'V', 'W', 'Y', 'Z', 'ZH',
+  'm','n','p','b','t','d','k','g','f','v','s','z','h','r','j','l','w','i','u','@','E','E~','E:','E:','O','O:',
+  'O~','a','A','A~','E~','E+','Y+','A+','J','x','G','y','Y:','e','o','2'
 ]
 
 _valid_symbol_set = set(valid_symbols)

@@ -1,5 +1,5 @@
 import os
-from corpus_2 import WERDetails
+from corpus import WERDetails
 import pickle
 import time
 import numpy as np

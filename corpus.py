@@ -7,21 +7,65 @@ from per_utils import per_phoneme_per, align_sequences, afer
 import os
 
 from typing import List, Tuple
+from utils import HParam
+import re
+
+class AlternativeCMUDict():
+
+
+    def __init__(self, location: str):
+        """
+        Basically an alternative CMUDict parset because the original one is most likely an overkill
+        """
+        # Create dict
+
+
+        with open(location, encoding='latin-1') as file:
+            cmu_dict = {}
+            for line in file:
+                parts = line.split('  ')
+                cmu_dict[parts[0]] = parts[1].rstrip("\n")
+
+        self.cmudict = cmu_dict
+        print("")
+
+
+
+    def get_arpabet(self,text):
+        """
+        :param text: accepts a single word
+        :return:
+        """
+
+        if text in self.cmudict:
+            return " ".join(["{" + phoneme + "} " for phoneme in self.cmudict[text].split(' ')])
+        else:
+            return text
+
 
 
 class WERDetails:
 
-    def __init__(self, location: str, skip_calculation=False):
+    def __init__(self, location: str, skip_calculation=False, config=None):
         """
         A class aimed to isolate all functions regarding one WERDetails calculations
 
         :param location: path to wer_details/per_utt file
         :param skip_calculation: skip the phoneme alignments, will make the class mostly unusable
+        :param config: configuration file including other parameters (see example configs)
         """
-        self.location = location
+        #text.cmu_dict.symbol_set = ["a"]
+        if config is None:
+            config = HParam("configs/eng.yaml")
 
+        self.location = location
+        self.config = config
         current_dir = os.path.dirname(__file__)
-        self.cmudict = text.cmudict.CMUDict(os.path.join(current_dir,"text/cmu_dictionary"))
+        if config.phoneme.alternative_cmudict:
+            self.cmudict = AlternativeCMUDict(os.path.join(current_dir,config.phoneme.dictionary))
+        else:
+            self.cmudict = text.cmudict.CMUDict(os.path.join(current_dir,config.phoneme.dictionary))
+
 
         # Converter table formatting
         self.converter_table = pd.read_csv(os.path.join(current_dir,"PhoneSet_modified.csv"))
@@ -202,14 +246,21 @@ class WERDetails:
         return arpabet_split
 
     def word_to_phoneme(self, word: str, stress_cleaned: bool) -> List[str]:
-        return self.arpabet_cleaner(text.get_arpabet(word, self.cmudict), stress_cleaned)
+
+        if self.config.phoneme.alternative_cmudict:
+            return self.arpabet_cleaner(self.cmudict.get_arpabet(word), False)
+        else:
+            return self.arpabet_cleaner(text.get_arpabet(word, self.cmudict), stress_cleaned)
 
     def words_to_phoneme(self, words: list, stress_cleaned: bool) -> List[str]:
         return list(itertools.chain(*[self.word_to_phoneme(word, stress_cleaned) for word in words
                                       if self.word_in_cmu_dict(word)]))
 
     def word_in_cmu_dict(self, word) -> bool:
-        decoded = text.get_arpabet(word, self.cmudict)
+        if self.config.phoneme.alternative_cmudict:
+            decoded = self.cmudict.get_arpabet(word)
+        else:
+            decoded = text.get_arpabet(word, self.cmudict)
         return "{" in decoded
 
     def phoneme_to_poa(self, phoneme: str) -> str:
