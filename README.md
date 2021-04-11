@@ -20,7 +20,7 @@ The WER and the PER is calculated based on the Levensteihn distance.
 ### Requirements
 - Use the conda environment.yml file provided
 
-### Paper reproduction
+### Paper reproduction  :page_with_curl:
 - Install the required packages for the framework
 - Create your venv of your choice from the requirements.txt provided
   - We use a function which will be deprecated in sklearn version 0.25, so please be mindful of that
@@ -43,6 +43,9 @@ The WER and the PER is calculated based on the Levensteihn distance.
 
     phoneme, other = wer_details.all_pers()
 ```
+
+## Languages supported
+:us: :netherlands:
 
 ### Future plans
 * Support for multiple languages, and g2p models in PER
