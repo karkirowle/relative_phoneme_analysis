@@ -1,7 +1,13 @@
 
-## Phoneme and articulatory analysis framework for Kaldi ASR
+## Phoneme and articulatory analysis framework for Kaldi/ESPNet ASR
 
-This work is the reproduction of the figures in the paper 'Low-Resource Automatic Speech Recognition and Error Analyses of Oral Cancer Speech'.
+This works is a phoneme and articulatory analysis framework based on lexicon-based grapheme to phoneme mappings. 
+Phoneme recognition is known to be difficult, as the task is highly contextual, nevertheless, phoneme analysis should be
+a first step in order to analyse where understanding of ASR models are lacking. This approach can use decoded sentences from
+word-level ASRs to quantify their performing on phonemes and articulatory features. 
+
+This work is also the reproduction of the figures in the paper 'Low-Resource Automatic Speech Recognition and Error Analyses of Oral Cancer Speech'.
+This work has been used in some of my other papers.
 
 The code in this repository can be used to calculate PER and AFER based on a Kaldi wer details file.
 
@@ -39,5 +45,8 @@ The WER and the PER is calculated based on the Levensteihn distance.
 ```
 
 ### Future plans
-* Support for ESPNet WER details
-* Support for multiple languages, and g2p models
+* Support for multiple languages, and g2p models in PER
+* Fully support MoA-PoA for Dutch phonemes
+
+### TODO (for contributing)
+* Some Dutch phonemes still missing from MoA table, 

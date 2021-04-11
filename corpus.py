@@ -5,7 +5,7 @@ import numpy as np
 from sklearn.metrics import confusion_matrix
 from per_utils import per_phoneme_per, align_sequences, afer
 import os
-
+import html
 from typing import List, Tuple
 from utils import HParam
 import re
@@ -13,30 +13,51 @@ import re
 
 class AlternativeCMUDict():
 
-    def __init__(self, location: str):
+    def __init__(self, location: str, conf):
         """
         Basically an alternative CMUDict parset because the original one is most likely an overkill
         """
         # Create dict
 
-        with open(location, encoding='latin-1') as file:
+        with open(location, encoding='utf-8') as file:
             cmu_dict = {}
             for line in file:
                 parts = line.split('  ')
                 cmu_dict[parts[0]] = parts[1].rstrip("\n")
 
         self.cmudict = cmu_dict
-        print("")
+        self.conf = conf
+
+        self.n = 0
+        self.oov = 0
+        #print("")
 
     def get_arpabet(self,text):
         """
         :param text: accepts a single word
         :return:
         """
-
+        if self.conf.phoneme.dutch_oov_rule:
+            #text = html.escape(text)
+            text = text.replace("ë", "&euml;")
+            text = text.replace("é", "&eacute;")
+            text = text.replace("à","&agrave;")
+            text = text.replace("ê","&ecirc;")
+            text = text.replace("ï","&iuml;")
+            text = text.replace("è","&egrave;")
+            text = text.replace("ü","&uuml;")
+            text = text.replace("ç","&ccedil;")
+            text = text.replace("ö", "&ouml;")
+            text = text.replace("ä", "&auml;")
+            #text = text.replace("")
+            #text = text.replace("ï", )
         if text in self.cmudict:
+            self.n +=1
             return " ".join(["{" + phoneme + "} " for phoneme in self.cmudict[text].split(' ')])
         else:
+            #print(text, "is OOV")
+            self.n +=1
+            self.oov += 1
             return text
 
 
@@ -59,7 +80,7 @@ class WERDetails:
         self.config = config
         current_dir = os.path.dirname(__file__)
         if config.phoneme.alternative_cmudict:
-            self.cmudict = AlternativeCMUDict(os.path.join(current_dir,config.phoneme.dictionary))
+            self.cmudict = AlternativeCMUDict(os.path.join(current_dir,config.phoneme.dictionary),conf=self.config)
         else:
             self.cmudict = text.cmudict.CMUDict(os.path.join(current_dir,config.phoneme.dictionary))
 
@@ -74,6 +95,9 @@ class WERDetails:
         if not skip_calculation:
             self.all_ref_phonemes, self.all_hyp_phonemes, self.manipulations = self.phoneme_alignment()
 
+        if config.phoneme.alternative_cmudict:
+            print(self.cmudict.oov/self.cmudict.n)
+
     def phoneme_alignment(self):
         """
         Extracts the reference and hypothesis phonemes based on the sentences in the Kaldi experiment's WERDetails file
@@ -84,7 +108,7 @@ class WERDetails:
         Performing this function enables calculation of confusion matrix and PER, and AFER
         :return:
         """
-        ref_sentences, hyp_sentences = self.load_sentences()
+        ref_sentences, hyp_sentences = self.load_sentences(asr=self.config.asr)
 
         all_ref_phonemes = list()
         all_hyp_phonemes = list()
@@ -97,6 +121,7 @@ class WERDetails:
 
             ref_phoneme_list = self.words_to_phoneme(clean_ref_sentence,stress_cleaned=True)
             hyp_phoneme_list = self.words_to_phoneme(clean_hyp_sentence,stress_cleaned=True)
+            #print(clean_ref_sentence)
             alignments, manipulations = align_sequences(ref_phoneme_list,hyp_phoneme_list)
             reference_aligned, hypothesis_aligned = alignments
 
@@ -200,17 +225,23 @@ class WERDetails:
         poas = self.config.phoneme.poa
         return poas, [self.afer_per_phoneme(self.poa_to_phonemes(poa)) for poa in poas]
 
-    def load_sentences(self) -> Tuple[list,list]:
+    def load_sentences(self, asr="kaldi") -> Tuple[list,list]:
         """
         Loads the references and hypothesis sentences from the WER details file
         :return: two list of sentences
         """
 
+        assert (asr == "kaldi") | (asr == "espnet")
+
         with open(self.location, 'r') as f:
             all_lines = f.readlines()
 
-        ref_words_sentencewise = [line.split()[2:] for line in all_lines if ("ref" in line)]
-        hyp_words_sentencewise = [line.split()[2:] for line in all_lines if ("hyp" in line)]
+        if asr == "kaldi":
+            ref_words_sentencewise = [line.split()[2:] for line in all_lines if ("ref" in line)]
+            hyp_words_sentencewise = [line.split()[2:] for line in all_lines if ("hyp" in line)]
+        else: # ESPNET (due to assert)
+            ref_words_sentencewise = [line.split()[1:] for line in all_lines if ("REF:" in line)]
+            hyp_words_sentencewise = [line.split()[1:] for line in all_lines if ("HYP:" in line)]
 
         return ref_words_sentencewise, hyp_words_sentencewise
 
@@ -324,6 +355,18 @@ class WERDetails:
         moa_filter = self.converter_table.loc[:, moa]
         moas = moa_filter.index[moa_filter == 1].values
         return moas
+
+    def phoneme_count(self) -> Tuple[List[str], List[int]]:
+        """
+        Returns the number of phonemes in the reference sentences, per phoneme
+
+        :return: sorted phoneme names, and sorted counts
+        """
+
+        # np.unique guarantees sorted return
+        labels, counts = np.unique(self.all_ref_phonemes, return_counts=True)
+
+        return list(labels), list(counts)
 
 
 if __name__ == '__main__':

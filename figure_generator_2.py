@@ -11,8 +11,7 @@ from scipy.stats import pearsonr
 matplotlib.rcParams['mathtext.fontset'] = 'stix'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
 
-
-def moa_to_phonemes(moa: str) -> List[str]:
+def moa_to_phonemes(moa: str, config) -> List[str]:
     """
 
     Turns a Manner of Articulation feature into the corresponding set of phonemes
@@ -20,13 +19,12 @@ def moa_to_phonemes(moa: str) -> List[str]:
     :param moa:
     :return:
     """
-    assert moa in ["Vowel", "Plosive", "Nasal", "Fricative", "Affricates", "Approximant"]
-    converter_table = pd.read_csv(os.path.join(os.path.dirname(__file__),"PhoneSet_modified.csv"))
-    converter_table = converter_table[converter_table['ARPAbet'].notna()]
+    assert moa in config.phoneme.moa
+    converter_table = pd.read_csv(os.path.join(os.path.dirname(__file__),config.phoneme.conversion_mapping))
+    converter_table = converter_table[converter_table[config.phoneme.phoneme_name].notna()]
     converter_table = converter_table.fillna(0)
 
-    # We consistently need to use uppercase throughout the code
-    converter_table = converter_table.set_index(converter_table["ARPAbet"].str.upper())
+    converter_table = converter_table.set_index(converter_table[config.phoneme.phoneme_name])
     moa_filter = converter_table.loc[:, moa]
     moas = moa_filter.index[moa_filter == 1].values
     return moas
@@ -248,29 +246,420 @@ def phoneme_barplot(per_list: list, mean_phoneme_count: list, experiment_names: 
 
 
     accumulator = 0
-    for i,cat_length in enumerate(cat_lengths):
-        cat = cats[i]
-        ax.annotate(cat,
-                    xy=(accumulator, -0),
-                    xytext=(accumulator + cat_length / 2 - 1, -5.5),
-                    annotation_clip=False,
-                    fontsize=8,
-                    arrowprops=props
-        )
-        ax.annotate(cat,
-                    xy=(accumulator + cat_length - 1, -0),
-                    xytext=(accumulator + cat_length / 2 - 1, -5.5),
-                    annotation_clip=False,
-                    fontsize=8,
-                    arrowprops=props
-        )
-        accumulator += cat_length
+    # for i,cat_length in enumerate(cat_lengths):
+    #     cat = cats[i]
+    #     ax.annotate(cat,
+    #                 xy=(accumulator, -0),
+    #                 xytext=(accumulator + cat_length / 2 - 1, -5.5),
+    #                 annotation_clip=False,
+    #                 fontsize=8,
+    #                 arrowprops=props
+    #     )
+    #    ax.annotate(cat,
+    #                xy=(accumulator + cat_length - 1, -0),
+    #                xytext=(accumulator + cat_length / 2 - 1, -5.5),
+    #                annotation_clip=False,
+    #                fontsize=8,
+    #                arrowprops=props
+    #    )
+    #    accumulator += cat_length
 
     plt.tight_layout()
     fig.tight_layout()
     fig.set_size_inches(format_dict["width_fig"], format_dict["height_fig"])
 
     current_dir = os.path.dirname(__file__)
+    plt.savefig(os.path.join(current_dir,"figures/" + filename + ".pdf"),bbox_inches='tight',pad_inches = 0.005)
+
+def phoneme_barplot_2(phoneme_list: list, per_ndarray: np.ndarray, experiment_names: list, filename: str, conf, enhancement=True):
+    """
+
+    :param phoneme_list: corresponding phonemes
+    :param per_list: a per ndarray containg the PER results for each experiment (Number of Phonemes x Experiments)
+    :param experiment_names: contains name of the experiments
+    :param filename: filename (str) to use for saving
+    :param config: config yaml
+    :parma enhancement: enhancement config
+    :return:
+    """
+
+    sorted_phoneme_label = list()
+    moa_cat_lengths = list()
+    moas = conf.phoneme.moa
+    number_of_phonemes, num_experiments = per_ndarray.shape
+    # First, we have to rearrange the phonemes by manner of articulation
+    for moa in moas:
+
+        phonemes_for_moa = list(moa_to_phonemes(moa,config=conf))
+
+        # Perhaps only a subset of MoAs will actually occur in the dataset, so we select those
+        occuring_phonemes_for_moa = [phoneme for phoneme in phonemes_for_moa if phoneme in phoneme_list]
+
+        # If no phonemes are left, drop the category from visualisation
+        if len(occuring_phonemes_for_moa) == 0:
+            moas.remove(moa)
+        else:
+            # This variable stores how many phonemes are there for each MoA
+            moa_cat_lengths.append(len(occuring_phonemes_for_moa))
+        sorted_phoneme_label.extend(occuring_phonemes_for_moa)
+
+    # sorted_phoneme_labels now contains the true order
+    # First we acquire the sort_idx from the original list
+    sort_idx = [phoneme_list.index(phoneme) for phoneme in sorted_phoneme_label]
+    # Then, we just it so the PERs are also ordered
+    sorted_per_ndarray = np.array(per_ndarray)[sort_idx,:]
+
+    format_dict = {
+        "width_fig": 6.6,
+        "height_fig": 3.14 * 0.60, # 0.75
+        "dpi": 100,
+        "width": 0.40, # the width of the bars
+        "fontsize": 10,
+        "legend_fontsize": 6,
+        "capsize": 1.5
+    }
+
+    fig_fontsize = 6  # 7
+
+    fig = plt.figure(num=None, figsize=(format_dict["width_fig"], format_dict["height_fig"]),
+                     dpi=format_dict["dpi"], facecolor='w', edgecolor='k')
+
+    x = np.arange(number_of_phonemes)
+
+    markers = ["v","^","<",">","x","v"]
+    styles = ["solid","solid","solid","solid","solid","dashed"]
+
+    for i in range(num_experiments):
+        plt.plot(x,sorted_per_ndarray[:,i],markersize=4,marker=markers[i], linestyle=styles[i])
+
+    # mixed - dvec
+    plt.plot(x,sorted_per_ndarray[:,0] - sorted_per_ndarray[:,1],markersize=4,marker=4)
+    ax = plt.gca()
+    ax.set_xticklabels(sorted_phoneme_label, rotation=45, fontsize=fig_fontsize)
+
+    ax.yaxis.grid(color='gray', linestyle='dashed', which="major")
+    ax.xaxis.grid(color='gray', linestyle='dashed', which="major")
+    ax.set_xticks(x)
+
+    if enhancement:
+        ax.set_xticklabels(["/" + x.lower() + "/" for x in sorted_phoneme_label], rotation=45, fontsize=format_dict["fontsize"])
+    else:
+        #ax.axes.xaxis.set_ticklabels([])
+        #ax.axes.get_xaxis().set_visible(False)
+        #ax.set_xticklabels(["/" + x.lower() + "/" for x in sorted_phoneme_label], rotation=45, fontsize=format_dict["fontsize"])
+        ax.set_xticklabels([" " *  (len(x) + 2) for x in sorted_phoneme_label], rotation=45, fontsize=format_dict["fontsize"])
+    if not enhancement:
+        ax.tick_params(axis='y', which='major', labelsize=format_dict["fontsize"]-3)
+    else:
+        ax.tick_params(axis='y', which='major', labelsize=format_dict["fontsize"])
+
+    #if not enhancement:
+    #    plt.ylim([0,150])
+
+    plt.xlim([0,len(sorted_phoneme_label)-1])
+
+    plt.ylabel("IPER (%)", fontsize=format_dict["fontsize"])
+
+    if not enhancement:
+        plt.legend(experiment_names, fontsize=format_dict["legend_fontsize"],
+               loc='upper center', bbox_to_anchor=(0.5, +1.3),
+               fancybox=True, shadow=True, ncol=num_experiments+1)
+
+    # This part produces the annotations in the bottom
+    props = dict(connectionstyle='angle, angleA=180, angleB=90, rad=0', # the angle parameter controls the bent lines
+                 arrowstyle='-',
+                 shrinkA=1, # this controls the bounding box extent around the text
+                 shrinkB=1, # same as above
+                 color="black",
+                 lw=1)
+
+    # This part is responsible for the nice explanatory bars
+    accumulator = 0
+
+    moas = ["Affr" if x == "Affricates" else x for x in moas]
+    moas = ["Apr" if x == "Approximant" else x for x in moas]
+
+    if enhancement:
+        y_offset = -8 #enhancement
+    else:
+        y_offset = -40
+    y_offset_offset = - 10
+
+    if enhancement:
+        for i,moa_length in enumerate(moa_cat_lengths):
+            moa = moas[i]
+            fontsizes = [8,8,6,8,6,6]
+            ax.annotate(moa,
+                        xy=(accumulator, y_offset),
+                        xytext=(accumulator + moa_length / 2 - 1, y_offset + y_offset_offset),
+                        annotation_clip=False,
+                        fontsize=fontsizes[i],
+                        arrowprops=props
+            )
+            ax.annotate(moa,
+                        xy=(accumulator + moa_length - 1, y_offset),
+                        xytext=(accumulator + moa_length / 2 - 1, y_offset + y_offset_offset),
+                        annotation_clip=False,
+                        fontsize=fontsizes[i],
+                        arrowprops=props
+            )
+            accumulator += moa_length
+
+    plt.tight_layout()
+    fig.tight_layout()
+    fig.set_size_inches(format_dict["width_fig"], format_dict["height_fig"])
+
+    current_dir = os.path.dirname(__file__)
+    #plt.show()
+    plt.savefig(os.path.join(current_dir,"figures/" + filename + ".pdf"),bbox_inches='tight',pad_inches = 0.005)
+
+def phoneme_barplot_3(phoneme_list: list, per_ndarray: np.ndarray, experiment_names: list, filename: str, conf):
+    """
+
+    :param phoneme_list: corresponding phonemes
+    :param per_list: a per ndarray containg the PER results for each experiment (Number of Phonemes x Experiments)
+    :param experiment_names: contains name of the experiments
+    :param filename: filename (str) to use for saving
+    :param config: config yaml
+    :return:
+    """
+
+    sorted_phoneme_label = list()
+    moa_cat_lengths = list()
+    moas = conf.phoneme.moa
+    number_of_phonemes, num_experiments = per_ndarray.shape
+    # First, we have to rearrange the phonemes by manner of articulation
+    for moa in moas:
+
+        phonemes_for_moa = list(moa_to_phonemes(moa,config=conf))
+
+        # Perhaps only a subset of MoAs will actually occur in the dataset, so we select those
+        occuring_phonemes_for_moa = [phoneme for phoneme in phonemes_for_moa if phoneme in phoneme_list]
+
+        # If no phonemes are left, drop the category from visualisation
+        if len(occuring_phonemes_for_moa) == 0:
+            moas.remove(moa)
+        else:
+            # This variable stores how many phonemes are there for each MoA
+            moa_cat_lengths.append(len(occuring_phonemes_for_moa))
+        sorted_phoneme_label.extend(occuring_phonemes_for_moa)
+
+    # sorted_phoneme_labels now contains the true order
+    # First we acquire the sort_idx from the original list
+    sort_idx = [phoneme_list.index(phoneme) for phoneme in sorted_phoneme_label]
+    # Then, we just it so the PERs are also ordered
+    sorted_per_ndarray = np.array(per_ndarray)[sort_idx,:]
+
+    format_dict = {
+        "width_fig": 6.6,
+        "height_fig": 3.14 * 0.75,
+        "dpi": 100,
+        "width": 0.40, # the width of the bars
+        "fontsize": 10,
+        "legend_fontsize": 7,
+        "capsize": 1.5
+    }
+
+    fig_fontsize = 6  # 7
+
+    fig = plt.figure(num=None, figsize=(format_dict["width_fig"], format_dict["height_fig"]),
+                     dpi=format_dict["dpi"], facecolor='w', edgecolor='k')
+
+    x = np.arange(number_of_phonemes)
+
+    markers = ["v","^","<",">","x","v"]
+
+    for i in range(num_experiments):
+        plt.plot(x,sorted_per_ndarray[:,i],markersize=4,marker=markers[i])
+
+    #plt.plot(x,sorted_per_ndarray[:,3] - np.mean(sorted_per_ndarray[:,:3]))
+
+    ax = plt.gca()
+    ax.set_xticklabels(sorted_phoneme_label, rotation=45, fontsize=fig_fontsize)
+
+    ax.yaxis.grid(color='gray', linestyle='dashed', which="major")
+    ax.xaxis.grid(color='gray', linestyle='dashed', which="major")
+    ax.set_xticks(x)
+
+    ax.set_xticklabels(["/" + x + "/" for x in sorted_phoneme_label], rotation=45, fontsize=format_dict["fontsize"])
+    ax.tick_params(axis='both', which='major', labelsize=format_dict["fontsize"])
+
+    #plt.ylim([0,65]) 0,65 for elderly
+    #plt.ylim([0,15])
+    plt.xlim([0,len(sorted_phoneme_label)-1])
+    plt.ylabel("PER (%)", fontsize=format_dict["fontsize"])
+
+    plt.legend(experiment_names, fontsize=format_dict["legend_fontsize"],
+               loc='upper center', bbox_to_anchor=(0.5, +1.3),
+               fancybox=True, shadow=True, ncol=num_experiments+1)
+
+    # This part produces the annotations in the bottom
+    props = dict(connectionstyle='angle, angleA=180, angleB=90, rad=0', # the angle parameter controls the bent lines
+                 arrowstyle='-',
+                 shrinkA=1, # this controls the bounding box extent around the text
+                 shrinkB=1, # same as above
+                 color="black",
+                 lw=1)
+
+    # This part is responsible for the nice explanatory bars
+    accumulator = 0
+
+    moas = ["Affr" if x == "Affricates" else x for x in moas]
+    moas = ["Apr" if x == "Approximant" else x for x in moas]
+
+    #y_offset = -8 #enhancement
+    y_offset = -35
+    y_offset_offset = - 5
+    for i,moa_length in enumerate(moa_cat_lengths):
+        moa = moas[i]
+        fontsizes = [8,8,6,8,6,6]
+        ax.annotate(moa,
+                    xy=(accumulator, y_offset),
+                    xytext=(accumulator + moa_length / 2 - 1, y_offset + y_offset_offset),
+                    annotation_clip=False,
+                    fontsize=fontsizes[i],
+                    arrowprops=props
+        )
+        ax.annotate(moa,
+                    xy=(accumulator + moa_length - 1, y_offset),
+                    xytext=(accumulator + moa_length / 2 - 1, y_offset + y_offset_offset),
+                    annotation_clip=False,
+                    fontsize=fontsizes[i],
+                    arrowprops=props
+        )
+        accumulator += moa_length
+
+    #plt.tight_layout()
+    #fig.tight_layout()
+    fig.set_size_inches(format_dict["width_fig"], format_dict["height_fig"])
+
+    current_dir = os.path.dirname(__file__)
+    #plt.show()
+    plt.savefig(os.path.join(current_dir,"figures/" + filename + ".pdf"),bbox_inches='tight',pad_inches = 0.005)
+
+def phoneme_barplot_normalised(phoneme_list: list, per_ndarray: np.ndarray, experiment_names: list, filename: str, conf,
+                               select_idx: int, mean_idx: list):
+    """
+
+    :param phoneme_list: corresponding phonemes
+    :param per_list: a per ndarray containg the PER results for each experiment (Number of Phonemes x Experiments)
+    :param experiment_names: contains name of the experiments
+    :param filename: filename (str) to use for saving
+    :param config: config yaml
+    :return:
+    """
+
+    sorted_phoneme_label = list()
+    moa_cat_lengths = list()
+    moas = conf.phoneme.moa
+    number_of_phonemes, num_experiments = per_ndarray.shape
+    # First, we have to rearrange the phonemes by manner of articulation
+    for moa in moas:
+
+        phonemes_for_moa = list(moa_to_phonemes(moa,config=conf))
+
+        # Perhaps only a subset of MoAs will actually occur in the dataset, so we select those
+        occuring_phonemes_for_moa = [phoneme for phoneme in phonemes_for_moa if phoneme in phoneme_list]
+
+        # If no phonemes are left, drop the category from visualisation
+        if len(occuring_phonemes_for_moa) == 0:
+            moas.remove(moa)
+        else:
+            # This variable stores how many phonemes are there for each MoA
+            moa_cat_lengths.append(len(occuring_phonemes_for_moa))
+        sorted_phoneme_label.extend(occuring_phonemes_for_moa)
+
+    # sorted_phoneme_labels now contains the true order
+    # First we acquire the sort_idx from the original list
+    sort_idx = [phoneme_list.index(phoneme) for phoneme in sorted_phoneme_label]
+    # Then, we just it so the PERs are also ordered
+    sorted_per_ndarray = np.array(per_ndarray)[sort_idx,:]
+
+    format_dict = {
+        "width_fig": 6.6,
+        "height_fig": 3.14 * 0.75,
+        "dpi": 100,
+        "width": 0.40, # the width of the bars
+        "fontsize": 10,
+        "legend_fontsize": 7,
+        "capsize": 1.5
+    }
+
+    fig_fontsize = 6  # 7
+
+    fig = plt.figure(num=None, figsize=(format_dict["width_fig"], format_dict["height_fig"]),
+                     dpi=format_dict["dpi"], facecolor='w', edgecolor='k')
+
+    x = np.arange(number_of_phonemes)
+
+    markers = ["v","^","<",">","x"]
+
+
+    plt.plot(x,sorted_per_ndarray[:,select_idx] - np.mean(sorted_per_ndarray[:,mean_idx]),markersize=4,marker=markers[0])
+
+    #plt.plot(x,sorted_per_ndarray[:,3] - np.mean(sorted_per_ndarray[:,:3]))
+
+    ax = plt.gca()
+    ax.set_xticklabels(sorted_phoneme_label, rotation=45, fontsize=fig_fontsize)
+
+    ax.yaxis.grid(color='gray', linestyle='dashed', which="major")
+    ax.xaxis.grid(color='gray', linestyle='dashed', which="major")
+    ax.set_xticks(x)
+
+    ax.set_xticklabels(["/" + x + "/" for x in sorted_phoneme_label], rotation=45, fontsize=format_dict["fontsize"])
+    ax.tick_params(axis='both', which='major', labelsize=format_dict["fontsize"])
+
+    #plt.ylim([0,65]) 0,65 for elderly
+    #plt.ylim([0,15])
+    plt.xlim([0,len(sorted_phoneme_label)-1])
+    plt.ylabel("PER (%)", fontsize=format_dict["fontsize"])
+
+    plt.legend(experiment_names, fontsize=format_dict["legend_fontsize"],
+               loc='upper center', bbox_to_anchor=(0.5, +1.3),
+               fancybox=True, shadow=True, ncol=num_experiments+1)
+
+    # This part produces the annotations in the bottom
+    props = dict(connectionstyle='angle, angleA=180, angleB=90, rad=0', # the angle parameter controls the bent lines
+                 arrowstyle='-',
+                 shrinkA=1, # this controls the bounding box extent around the text
+                 shrinkB=1, # same as above
+                 color="black",
+                 lw=1)
+
+    # This part is responsible for the nice explanatory bars
+    accumulator = 0
+
+    moas = ["Affr" if x == "Affricates" else x for x in moas]
+    moas = ["Apr" if x == "Approximant" else x for x in moas]
+
+    #y_offset = -8 #enhancement
+    y_offset = -35
+    y_offset_offset = - 5
+    for i,moa_length in enumerate(moa_cat_lengths):
+        moa = moas[i]
+        fontsizes = [8,8,6,8,6,6]
+        ax.annotate(moa,
+                    xy=(accumulator, y_offset),
+                    xytext=(accumulator + moa_length / 2 - 1, y_offset + y_offset_offset),
+                    annotation_clip=False,
+                    fontsize=fontsizes[i],
+                    arrowprops=props
+        )
+        ax.annotate(moa,
+                    xy=(accumulator + moa_length - 1, y_offset),
+                    xytext=(accumulator + moa_length / 2 - 1, y_offset + y_offset_offset),
+                    annotation_clip=False,
+                    fontsize=fontsizes[i],
+                    arrowprops=props
+        )
+        accumulator += moa_length
+
+    plt.tight_layout()
+    fig.tight_layout()
+    fig.set_size_inches(format_dict["width_fig"], format_dict["height_fig"])
+
+    current_dir = os.path.dirname(__file__)
+    #plt.show()
     plt.savefig(os.path.join(current_dir,"figures/" + filename + ".pdf"),bbox_inches='tight',pad_inches = 0.005)
 
 
@@ -446,3 +835,4 @@ def visualise_confusion_matrices(confusion_matrices: list, experiment_name_list:
                 facecolor=fig.get_facecolor(), transparent=True)
 
     return 1
+

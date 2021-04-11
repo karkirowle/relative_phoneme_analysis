@@ -232,20 +232,33 @@ def afer(phonemes: list, reference: list, hypothesis: list, manipulations: list)
 
 if __name__ == '__main__':
 
-    r = ["t","p", "ax", "h", "ae","ax"]
-    h = ["ax", "k", "ae", "t"]
+    r = ["a","b","c", "a", "a", "a","a","a","a" ,"d","a"]
+    h = ["d", "e", "f"]
 
+    r = ['DH', 'EH', 'N', 'DH', 'AH', 'G', 'UH', 'D', 'S', 'OW', 'L', 'OW', 'P', 'AH', 'N', 'L', 'IY', 'SH', 'OW', 'L', 'D',
+     'ER', 'D', 'DH', 'AH', 'B', 'ER', 'D', 'AH', 'N', 'SH', 'IY', 'HH', 'AE', 'D', 'B', 'AO', 'R', 'N', 'S', 'OW', 'L',
+     'AO', 'NG', 'IH', 'N', 'S', 'IY', 'K', 'R', 'AH', 'T', 'AH', 'N', 'D', 'B', 'R', 'EY', 'V', 'L', 'IY', 'T', 'R',
+     'AH', 'JH', 'D', 'AA', 'N', 'AH', 'L', 'OW', 'N']
+
+    h = ['AH', 'G', 'EH', 'N', 'N', 'OW', 'T', 'AH', 'D', 'F', 'AO', 'R', 'L', 'AY', 'F', 'IH', 'N', 'HH', 'IH', 'Z', 'HH', 'AE', 'N', 'D', 'AE', 'T', 'V', 'IH', 'Z', 'IH', 'T', 'ER', 'Z', 'AE', 'T', 'AH', 'N', 'D', 'B', 'R', 'OW', 'K', 'EY', 'F', 'AE', 'D', 'L', 'AO', 'NG', 'IH', 'N', 'DH', 'AH', 'K', 'R', 'AE', 'SH', 'AH', 'N', 'D', 'L', 'AE', 'F', 'DH', 'EH', 'R', 'IH', 'N', 'AE', 'N', 'AH', 'M', 'AH', 'L', 'Z', 'AH', 'N', 'D', 'AA', 'R', 'L', 'UH', 'K', 'IY', 'DH', 'ER', 'F', 'AO', 'R', 'DH', 'AH', 'F', 'ER', 'N', 'IH', 'CH', 'ER', 'AO', 'R', 'DH']
+
+    print(len(r))
+    print(len(h))
+    # hyp sentence 77
     alignments, manipulations = align_sequences(r, h)
     reference_aligned, hypothesis_aligned = alignments
 
+    print(alignments)
+    print(manipulations)
+
     # PER: insertion + delete + substitution / total things to guess
-    phoneme = "t"
+    #phoneme = "t"
     #per_phoneme_per(phoneme, reference_aligned, hypothesis_aligned, manipulations)
     # Phoneme Error RATE (per phoneme)
-    print(reference_aligned)
-    print(hypothesis_aligned)
-    result = afer(["t","ax"], reference_aligned, hypothesis_aligned, manipulations)
-    print(result)
+    #print(reference_aligned)
+    #print(hypothesis_aligned)
+    #result = afer(["t","ax"], reference_aligned, hypothesis_aligned, manipulations)
+    #print(result)
     # Articulatory feature error RATE (per articulatory feature)
 
 
